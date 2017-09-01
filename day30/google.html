@@ -1,0 +1,4254 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+	<title>바꿈</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta http-equiv="imagetoolbar" content="no" />
+	<meta http-equiv="Cache-Control" content="No-Cache" />
+	<meta HTTP-EQUIV="Pragma" CONTENT="no-cache"/>
+	<meta HTTP-EQUIV="Expires" CONTENT="-1"/>
+
+	<meta name="description" content="고도몰의 쇼핑몰 솔루션 특징, 혜택에 대해 안내해 드립니다."/>
+	<meta name="naver-site-verification" content="f0f3fa240a340044b4171667d244f914eeda8a20"/>
+
+	<!-- START OPEN GRAPH -->
+	<meta property="og:locale" content="ko_KR"/>
+	<meta property="og:image" content="//img.godo.co.kr/godomall/etc/ci.png"/>
+	<meta property="og:image:width" content="270"/>
+	<meta property="og:image:height" content="270"/>
+	<meta property="og:type" content="website"/>
+	<meta property="og:url" content="http://www.godo.co.kr/">
+	<meta property="og:title" content="고도 - 온라인 쇼핑몰 창업"/>
+	<meta property="og:description" content="NHN고도 :  쇼핑몰 창업, 고도몰5 솔루션, 호스팅, 교육아카데미, 디자인, 마케팅, 해외판매" />
+	<!-- END OPEN GRAPH -->
+
+	<link type="text/css" rel="stylesheet" href="//static.godo.co.kr/css/common.css" />
+	<link type="text/css" rel="stylesheet" href="//static.godo.co.kr/css/gnb.css?20170720" />
+	<link type="text/css" rel="stylesheet" href="//static.godo.co.kr/css/page.css" />
+	<script type="text/javascript" src="//static.godo.co.kr/extern/jquery/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="//static.godo.co.kr/extern/jquery-cookie/jquery.cookie-1.4.1.min.js"></script>
+	<script type="text/javascript">
+	jQuery.godo = {};
+	jQuery.godo.isLogin = false;
+	jQuery.godo.crossScript = function(scriptCode) {
+		try {
+			eval(scriptCode);
+		} catch(err) {
+			var $form = $("<form></form>"),
+					$input = $("<input type='hidden' name='code'>"),
+					actionUrl;
+			if(document.location.protocol === 'http:') {
+				actionUrl = 'https://';
+			} else {
+				actionUrl = 'http://';
+			}
+			actionUrl = actionUrl + "www.godo.co.kr/etc/js-exec.gd";
+
+			$form.attr("action",actionUrl);
+			$form.attr("method","post");
+			$form.appendTo("body");
+
+			$input.val(scriptCode);
+
+			$form.append($input);
+			$form.submit();
+		}
+	}
+
+	if (!String.prototype.trim) {
+		String.prototype.trim=function(){return this.replace(/^\s+|\s+$/g, '');};
+	}
+
+	window.crossDomain = {
+		originalDomain : document.domain,
+		commonDomain : "godo.co.kr",
+		common : function() {
+			document.domain = window.crossDomain.commonDomain;
+
+		},
+		restore : function() {
+			document.domain = window.crossDomain.originalDomain;
+		}
+	};
+
+	function is_touch_device() {
+		return (('ontouchstart' in window)
+		|| (navigator.MaxTouchPoints > 0)
+		|| (navigator.msMaxTouchPoints > 0));
+	}
+
+	document.domain = "godo.co.kr";
+
+	// 로그인 플러그인 등록
+	jQuery.godo.loginLayer = function(callback,returnUrl,domain) {
+
+		domain = typeof domain !== 'undefined' ? domain : 'godo';
+
+		$("body").css("overflow","hidden");
+		$("body").append("<div id='popupLoginBackground'></div>");
+		backgroundLayer = $("#popupLoginBackground");
+		backgroundLayer.css({
+			"position":"fixed",
+			"top":"0px",
+			"left":"0px",
+			"width":"100%",
+			"height":"100%",
+			"background-color":"#000",
+			"z-index":"5002",
+			"opacity":"0.3"
+		});
+
+
+		$("body").append("<iframe id='popframeMemberLogin' frameborder='0'></iframe>");
+		$("#popframeMemberLogin").css({
+			"position":"fixed",
+			"top":"50%",
+			"left":"50%",
+			"width":"538px",
+			"height":"314px",
+			"margin-left":"-269px",
+			"margin-top":"-157px",
+			"display":"block",
+			"z-index":"5003",
+			"border":"0px"
+		});
+
+		if (domain == 'godo') {
+			$("#popframeMemberLogin").attr("src","https://www.godo.co.kr/member/login-layer.gd?returnUrl="+encodeURIComponent(returnUrl));
+		} else {
+			$("#popframeMemberLogin").attr("src","https://"+domain+"/member/login-layer.gd?returnUrl="+encodeURIComponent(returnUrl));
+		}
+
+		window.popCloseLogin = function(){
+			$("body").css("overflow","auto");
+			$("#popupLoginBackground").remove();
+			$("#popframeMemberLogin").remove();
+		};
+
+		window.loginDone = function(){
+			$.godo.isLogin = true;
+			$("body").css("overflow","auto");
+			$("#popupLoginBackground").remove();
+			$("#popframeMemberLogin").remove();
+			callback();
+		};
+	}
+
+	// 1:1문의하기 플러그인 등록
+	jQuery.godo.memberInquiry = function(refcd,catcd) {
+		$("body").css("overflow","hidden");
+		$("body").append("<div id='backgroundBusinessConsult'></div>");
+		$("#backgroundBusinessConsult").css({
+			"position":"fixed",
+			"top":"0px",
+			"left":"0px",
+			"width":"100%",
+			"height":"100%",
+			"background-color":"#000",
+			"z-index":"5000",
+			"opacity":"0.3"
+		});
+
+		$("body").append("<iframe id='popframeMemberInquiry'></iframe>");
+		$("#popframeMemberInquiry").css({
+			"position":"fixed",
+			"top":"30%",
+			"left":"50%",
+			"width":"802px",
+			"height":"1000px",
+			"margin-left":"-401px",
+			"margin-top":"-302px",
+			"display":"block",
+			"z-index":"5001",
+			"border":"0px"
+		});
+
+		$("#popframeMemberInquiry").attr("src","https://www.godo.co.kr/mygodo/inquiry-layer.gd?refcd="+refcd+"&catcd="+catcd);
+
+		window.popClose = function(){
+			$("body").css("overflow","auto");
+			$("#backgroundBusinessConsult").remove();
+			$("#popframeMemberInquiry").remove();
+		};
+	}
+
+	// 창업상담
+	jQuery.godo.businessConsult = function() {
+		$("body").css("overflow","hidden");
+		$("body").append("<div id='backgroundBusinessConsult'></div>");
+		$("#backgroundBusinessConsult").css({
+			"position":"fixed",
+			"top":"0px",
+			"left":"0px",
+			"width":"100%",
+			"height":"100%",
+			"background-color":"#000",
+			"z-index":"5000",
+			"opacity":"0.3"
+		});
+
+		$("body").append("<iframe id='popframeBusinessConsult' name='popframeBusinessConsult'></iframe>");
+		$("#popframeBusinessConsult").css({
+			"position":"fixed",
+			"top":"30%",
+			"left":"50%",
+			"width":"802px",
+			"height":"1000px",
+			"margin-left":"-401px",
+			"margin-top":"-302px",
+			"display":"block",
+			"z-index":"5001",
+			"border":"0px"
+		});
+
+		$("#popframeBusinessConsult").attr("src","https://www.godo.co.kr/customer/business-consult.gd");
+		window.popClose = function(){
+			$("body").css("overflow","auto");
+			$("#backgroundBusinessConsult").remove();
+			$("#popframeBusinessConsult").remove();
+		};
+
+		window.changeInquiry = function(){
+			$("body").css("overflow","auto");
+			$("#backgroundBusinessConsult").remove();
+			$("#popframeBusinessConsult").remove();
+
+			if($.godo.isLogin) {
+				$.godo.memberInquiry();
+			} else {
+				$.godo.loginLayer(function(){
+					$.godo.memberInquiry();
+				},self.location.href);
+			}
+		};
+	}
+
+	// 글로벌 서비스 통합안내 레이어
+	jQuery.godo.globalService = function() {
+		$("body").css("overflow","hidden");
+		$("body").append("<div id='backgroundGlobalService'></div>");
+		$("#backgroundGlobalService").css({
+			"position":"fixed",
+			"top":"0px",
+			"left":"0px",
+			"width":"100%",
+			"height":"100%",
+			"background-color":"#000",
+			"z-index":"5000",
+			"opacity":"0.3"
+		});
+
+		$("body").append("<iframe id='popframeGlobalService'></iframe>");
+		$("#popframeGlobalService").css({
+			"position":"fixed",
+			"top":"50%",
+			"left":"50%",
+			"width":"1162px",
+			"height":"645px",
+			"margin-left":"-627px",
+			"margin-top":"-332px",
+			"display":"block",
+			"z-index":"5001",
+			"border":"0px"
+		});
+
+		$("#popframeGlobalService").attr("src","https://www.godo.co.kr/echost/global/global-service-layer.gd");
+
+		window.popClose = function(){
+			$("body").css("overflow","auto");
+			$("#backgroundGlobalService").remove();
+			$("#popframeGlobalService").remove();
+		};
+	}
+
+
+	$(function(){
+
+		$('div.layer-login button.close').click(function () {
+			$("#popupLoginBackground").remove();
+			$(".layer-login").hide();
+			$("body").css("overflow","auto");
+			$("div.layer-login input.label-id, div.layer-login input.label-id").val('');
+			$("div.layer-login input.label-id, div.layer-login input.label-pw").val('');
+			$("div.layer-login input.label-id, div.layer-login input.label-pw").addClass('text');
+		});
+
+		$("div.layer-login input.label-id, div.layer-login input.label-pw").focus(function() {
+			$(this).removeClass('text');
+		});
+		$("div.layer-login input.label-id, div.layer-login input.label-pw").blur(function() {
+			if ($(this).val() === "") {
+				$(this).addClass('text');
+			}
+			else {
+				$(this).removeClass('text');
+			}
+		});
+		$("div.layer-login input.label-id, div.layer-login input.label-pw").blur();
+		$("a.btn-login, .btn-login").click(function(e){
+			var btnUrl = $(this).attr("href");
+			if($.godo.isLogin === false) {
+				e.preventDefault();
+				$.godo.loginLayer(function(){
+					self.location.href = btnUrl;
+				},btnUrl);
+			}
+		});
+
+		$(".btn-business-consult").click(function(e){
+			e.preventDefault();
+			$.godo.businessConsult();
+		});
+
+		$(".btn-member-inquiry").click(function(e){
+			var refcd = $(this).data("topno"),
+					catcd = $(this).data("subno");
+			e.preventDefault();
+
+			if($.godo.isLogin) {
+				$.godo.memberInquiry(refcd,catcd);
+			} else {
+				$.godo.loginLayer(function(){
+					$.godo.memberInquiry(refcd,catcd);
+				},self.location.href);
+			}
+		});
+
+		$(".btn-global-service").click(function(e){
+			e.preventDefault();
+			$.godo.globalService();
+		});
+
+		$("input,textarea").each(function(){
+			var $this = $(this),
+					titleClass = $this.data("godo-titleclass"),
+					v = $this.val().trim();
+
+			$this.val(v);
+			if(titleClass) {
+				$this.on("focus",function(e){
+					$this.removeClass(titleClass);
+				}).on("blur",function(e){
+					var v = $this.val().trim();
+					$this.val(v);
+					if(v === "") {
+						$this.addClass(titleClass);
+					}
+				});
+
+				if(v === "") {
+					$this.addClass(titleClass);
+				} else {
+					$this.removeClass(titleClass);
+				}
+			}
+		});
+
+		
+		$('.btn-go-top').click(function() {
+			$('html, body').animate({scrollTop: '0px'}, 300);
+			return false;
+		});
+
+	});
+
+	$.cookie.defaults.domain = 'godo.co.kr';
+	$.cookie.defaults.path = '/';
+</script>
+	
+	<link type="text/css" rel="stylesheet" href="//static.godo.co.kr/css/shoppingmall-main.css?20170424" />
+	<script type="text/javascript" src="//static.godo.co.kr/extern/jquery-ui-1.10.4/jquery-ui-1.10.4.min.js"></script>
+	<script type="text/javascript" src="//static.godo.co.kr/extern/jquery-cycle2/jquery.cycle2.min.js"></script>
+	<script type="text/javascript" src="//static.godo.co.kr/extern/jquery-cycle2/jquery.cycle2.carousel.min.js"></script>
+	<script type="text/javascript" src="//static.godo.co.kr/extern/zeroclipboard/ZeroClipboard.min.js"></script>
+	<script type="text/javascript">
+		'use strict';
+		+(function($) {
+
+			
+			$.fn.tab = function (options) {
+				var $allModules = $(this);
+				$allModules.each(function() {
+					var
+							$module = $(this),
+							module = {
+								init: function () { // 모듈 1
+									module.redraw(0);
+									// 윈도우 로드된 후 바로 실행
+									$(window).on('load', module.event.hashchange);
+									// 해시변경된 후 실행
+									$(window).on('hashchange', module.event.hashchange);
+									$module.find('li').on('click', module.event.click);
+								},
+								redraw: function (idx) { // 모듈 2
+									$module.siblings().removeClass('active').eq( idx ).addClass('active');
+									$module.find('img').each(function(i, e){
+										$(this).attr('src',$(this).attr('src').replace('_on.png', '.png') );
+										if ( i == idx ) {
+											$(this).attr('src',$(this).attr('src').replace('.png', '_on.png') );
+										}
+									});
+								},
+								event: {
+									click: function () { // 이벤트 1
+										module.redraw($(this).index());
+									},
+									hashchange: function () { // 이벤트 2
+										var hash = location.hash;
+										if(hash != '' && hash == '#keyword') {
+											module.redraw(1);
+										}
+									}
+								}
+							};
+					module.init();
+				});
+			};
+
+			var ajaxState = false;
+
+			$(function() {
+				// cycle2 scrollvert
+				/*! scrollVert transition plugin for Cycle2;  version: 20140128 */
+				$.fn.cycle.transitions.scrollVert = {
+					before: function( opts, curr, next, fwd ) {
+						opts.API.stackSlides( opts, curr, next, fwd );
+						var height = opts.container.css('overflow','hidden').height();
+						opts.cssBefore = { top: fwd ? -height : height, left: 0, opacity: 1, display: 'block', visibility: 'visible' };
+						opts.animIn = { top: 0 };
+						opts.animOut = { top: fwd ? height : -height };
+					}
+				};
+
+				$('.section a').on('click', function(e) {
+					e.preventDefault();
+					$('html,body').animate({ scrollTop: $(this.hash).offset().top - 100 }, 500);
+				});
+
+				$('.service-tab').tab();
+
+				
+				$('.main-goodshop #godomall5').cycle();
+				$('.main-goodshop > .box > div').hide();
+				$('.goodshop-menu li > div:first-child').addClass('on');
+
+				var gsTab = $('.goodshop-menu .tab a');
+
+				$(gsTab).each(function() {
+					var currentTarget = $(this).attr('href');
+					if($(this).hasClass('on')) {
+						$('.main-goodshop > .box > div').hide();
+						$(currentTarget).show();
+					}
+					$(this).click(function(e){
+						e.preventDefault();
+						$('.goodshop-contents').hide();
+						$(currentTarget).show();
+						$('.goodshop-menu .tab a').removeClass('on');
+						$(this).addClass('on');
+					});
+					$(this).one("click", function(){
+						var category = currentTarget.split('#');
+						if (ajaxState == true || category[1] == 'godomall5') {
+							return false;
+						}
+						ajaxState = true;
+						$.post("/etc/goodshop-process.gd", {
+							mode:'tabChange', cate:category[1], pageCount:'12'
+						}, function(data){
+							ajaxState = false;
+							$('.main-goodshop .box').append(data);
+							$('.main-goodshop '+currentTarget).cycle();
+						});
+					});
+				});
+				var
+						$target = $('.navigation'),
+						minYOffset = $target.offset().top,
+						windowYScrolled = function windowYScrolled() {
+							var
+									scrollY = $(window).scrollTop(),
+									lastScrollIdx = 0;
+							if ( scrollY > minYOffset ) {
+								$target.addClass('fixed').next().addClass('nav-fixed');
+							} else {
+								$target.removeClass('fixed').next().removeClass('nav-fixed');
+							}
+							$('.scroll-spy-trigger').each(function(i, e) {
+								if ( scrollY > $(this).offset().top - 199 ) {
+									lastScrollIdx = i;
+								}
+							});
+
+							$('.section-inner .section').removeClass('active').eq( lastScrollIdx ).addClass('active');
+						};
+				$(window).on('scroll', windowYScrolled);
+
+				
+				$("#btn-open-startguide").click(function(e){
+					var startTab = $("#allService div.left ul li a.tab2");
+
+					e.preventDefault();
+					openAllService();
+					$('html, body').animate({scrollTop: '0px'}, 300);
+					$('#allService div.right > div').hide();
+					$("#asCnt2").show();
+					$('#allService div.left ul li').removeClass('on');
+					startTab.parent().addClass('on');
+				});
+
+				
+				var btnHover = function btnHover(e) {
+					var selector = $(this);
+					selector.find('img').attr('src',$(this).find('img').attr('src').replace('_on.png', '.png') );
+					if(e.type == 'mouseenter') {
+						selector.find('img').attr('src',$(this).find('img').attr('src').replace('.png', '_on.png') );
+					}
+				};
+
+				$('.go').on('mouseenter', btnHover);
+				$('.go').on('mouseleave', btnHover);
+			});
+
+		})(jQuery);
+	</script>
+
+	<!--[if lte ie 8]><link href="//static.godo.co.kr/css/oldie.css" rel="stylesheet" type="text/css" /><![endif]-->
+</head>
+<body>
+
+
+
+	
+<script type="text/javascript">
+	
+	var isLogin = false;
+	
+
+	var loginUrl = "http://www.godo.co.kr/member/login.php"+"?returnURL="+encodeURIComponent(self.location.href);
+	var openAllService = function(){
+		var
+				allServiceBg = $("#allServiceBg"),
+				allService = $("#allService");
+
+		$('#allService').show();
+
+		allServiceBg.css({
+			"position":"absolute",
+			"top":allService.offset().top,
+			"left":"0px",
+			"width":"100%",
+			"height":$( document ).height() - allService.offset().top,
+			"background-color":"#000",
+			"z-index":"100",
+			"display":"none",
+			"opacity":"0.3"
+		});
+
+		allServiceBg.show();
+	};
+
+	$(function(){
+
+		
+		$("#btn-gnb-login").click(function(e){
+			e.preventDefault();
+			if($.godo) {
+				$.godo.loginLayer(function(){
+					self.location.reload(true)
+				},self.location.href);
+			} else {
+				self.location.href = loginUrl;
+			}
+		});
+
+		
+		$("body").append("<div id='allServiceBg'></div>");
+
+		$('#gnb-header a.link-all-service, a.link_all_service').click(function (e) {
+			e.preventDefault();
+			openAllService();
+		});
+
+		$('#allService button.close').click(function(e){
+			e.preventDefault();
+			$("#allServiceBg").hide();
+			$("#allService").hide();
+		});
+
+		$('#allService div.left ul li:first-child').addClass('on');
+		$('#allService div.right > div:first-child').show();
+		$('#allService div.left ul li a').click(function() {
+			var currentTab = $(this).attr('href');
+			$('#allService div.right > div').hide();
+			$(currentTab).show();
+			$('#allService div.left ul li').removeClass('on');
+			$(this).parent().addClass('on');
+			return false;
+		});
+
+		
+		$(".btn-business-consult-gnb").click(function(e){
+			e.preventDefault();
+			if($.godo) {
+				$("#allServiceBg").hide();
+				$("#allService").hide();
+				$.godo.businessConsult();
+			} else {
+				top.location.href = "http://www.godo.co.kr/?act=consult";
+			}
+		});
+		
+
+		
+		$('.main_gnb_menu li a').mouseenter(function(){
+			$('.main_gnb_menu li a').removeClass("on");
+			$(this).addClass('on');
+		});
+		$('.main_header').mouseleave(function(){
+			$('.main_gnb_menu li a').removeClass('on');
+			$('.all_menu_wrap').removeClass('on');
+		});
+
+		$('.main_top_menu, .main_header_top h1').mouseenter(function(){
+			$('.main_gnb_menu li a').removeClass("on");
+			$('.all_menu_wrap').removeClass('on');
+		});
+		
+
+		
+		
+		$('.sub_dep02 li a').mouseenter(function(){
+			
+			
+			var _data = $(this).data('key');
+			if (_data!="edu_fast") {
+				$('.sub_dep02').addClass('on');
+				$('.sub_dep02 li a').removeClass('on');
+				$(this).addClass('on');
+				
+				$('.sub_dep03').removeClass('on');
+				$('.all_menu_wrap').removeClass('on');
+				$('.sub_dep03.'+_data).addClass('on');
+			}
+		});
+
+		$('#sub_header').mouseleave(function(){
+			$('.sub_dep02').removeClass('on');
+			$('.sub_dep02 li a').removeClass('on');
+			$('.sub_dep03').removeClass('on');
+			$('.all_menu_wrap').removeClass('on');
+		});
+
+		
+		$('.all_menu').mouseenter(function(){
+			var _this = $(this).closest('#sub_header').attr('class');
+			$('.all_menu_wrap.'+_this).addClass('on');
+		});
+		$('.all_menu_wrap').mouseleave(function(){
+			$('.sub_dep02').removeClass('on');
+			$('.sub_dep02 li a').removeClass('on');
+
+			var _this = $(this).closest('#sub_header').attr('class');
+			$('.all_menu_wrap.'+_this).removeClass('on');
+		});
+
+		
+		$('.main_gnb_menu a').mouseenter(function(){
+			var _this = $(this).attr('class');
+			_this = _this.substring(0,_this.length-3);
+			$('.all_menu_wrap').removeClass('on');
+			$('.all_menu_wrap.'+_this).addClass('on');
+		});
+		$('.all_menu_wrap').mouseleave(function(){
+			$('.sub_dep02').removeClass('on');
+			$('.sub_dep02 li a').removeClass('on');
+
+			var _this = $(this).closest('#sub_header').attr('class');
+			$('.all_menu_wrap.'+_this).removeClass('on');
+		});
+
+		
+				
+		
+
+	});
+
+</script>
+
+
+	
+<div id="top_header" class="echost">
+	<div class="sub_box">
+		<div class="sub_dep01">
+			<ul>
+				<li class="on"><a href="http://www.godo.co.kr/echost/solution/main.gd" class="echost">쇼핑몰</a></li>
+				<li class=""><a href="http://hosting.godo.co.kr/" class="hosting">호스팅</a></li>
+				<li class=""><a href="http://domain.godo.co.kr/" class="domain">도메인</a></li>
+				<li class=""><a href="http://design.godo.co.kr/" class="design">디자인</a></li>
+				<li class=""><a href="http://marketing.godo.co.kr/" class="marketing">마케팅</a></li>
+				<li class=""><a href="http://edu.godo.co.kr/" class="edu">아카데미</a></li>
+			</ul>
+		</div>
+		<div class="sub_top_menu">
+			<ul>
+				
+											<li><a href="http://www.godo.co.kr/member/login.php" id="btn-gnb-login">로그인</a></li>
+						<li><a href="http://www.godo.co.kr/member/regist_step01.php">회원가입</a></li>
+									
+				<li><a href="https://www.godo.co.kr/mygodo/main.gd" >마이고도</a></li>
+				<li><a href="http://www.godo.co.kr/customer/main.gd" >고객센터</a></li>
+				<li><a class="link_all_service" href="#allService">사이트맵</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<!-- 서브 -->
+
+<div id="sub_header" class="echost">
+
+	<div class="sub_gnb">
+		<h1>
+			<a href="http://www.godo.co.kr/">
+				<img src="//img.godo.co.kr/godomall/header/sub/godomall.png" alt="godo"/>
+			</a>
+												<span class="main_slogan">
+				<a href="http://www.godo.co.kr/echost/solution/main.gd" title="쇼핑몰 메인 바로가기">
+					<img src="//img.godo.co.kr/godomall/header/common/h_shop.png" class="h_echost" alt="쇼핑몰">
+				</a>
+			</span>
+																<span class="main_slogan">
+				<a href="http://hosting.godo.co.kr/" title="호스팅 메인 바로가기">
+					<img src="//img.godo.co.kr/godomall/header/common/h_hosting.png" class="h_hosting" alt="호스팅">
+				</a>
+			</span>
+																<span class="main_slogan">
+				<a href="http://domain.godo.co.kr/" title="도메인 메인 바로가기">
+					<img src="//img.godo.co.kr/godomall/header/common/h_domain.png" class="h_domain" alt="도메인">
+				</a>
+			</span>
+																<span class="main_slogan">
+				<a href="http://design.godo.co.kr/" title="디자인 메인 바로가기">
+					<img src="//img.godo.co.kr/godomall/header/common/h_design.png" class="h_design" alt="디자인">
+				</a>
+			</span>
+																<span class="main_slogan">
+				<a href="http://marketing.godo.co.kr/" title="마케팅 메인 바로가기">
+					<img src="//img.godo.co.kr/godomall/header/common/h_marketing.png" class="h_marketing" alt="마케팅">
+				</a>
+			</span>
+																<span class="main_slogan">
+				<a href="http://edu.godo.co.kr/" title="아카데미 메인 바로가기">
+					<img src="//img.godo.co.kr/godomall/header/common/h_academy.png" class="h_edu" alt="아카데미">
+				</a>
+			</span>
+																<span class="main_slogan">
+				<a href="http://www.godo.co.kr/mygodo/main.gd" title="마이고도 메인 바로가기">
+					<img src="//img.godo.co.kr/godomall/header/common/h_mygodo.png" class="h_mygodo" alt="마이고도">
+				</a>
+			</span>
+																<span class="main_slogan">
+				<a href="http://www.godo.co.kr/customer/main.gd" title="고객센터 메인 바로가기">
+					<img src="//img.godo.co.kr/godomall/header/common/h_customer.png" class="h_customer" alt="고객센터">
+				</a>
+			</span>
+									</h1>
+		<div class="sub_dep02">
+			
+									<ul class="echost">
+						<li><a href="javascript:void(0);" class="all_menu"><img src="//img.godo.co.kr/godomall/header/common/all_menu.png" alt="전체보기"></a></li>													<li >
+								<a href="http://www.godo.co.kr/echost/solution/godomall-standard-intro.gd"  data-key="echost_solution" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/shop_shop.png" alt="쇼핑몰 솔루션">
+								</a>
+							</li>
+													<li >
+								<a href="http://www.godo.co.kr/echost/power/add/payment/pg-intro.gd"  data-key="echost_power" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/shop_power.png" alt="파워서비스">
+								</a>
+							</li>
+													<li >
+								<a href="http://www.godo.co.kr/echost/mobile/mobile-shop-intro.gd"  data-key="echost_mobile" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/shop_mobile.png" alt="모바일서비스">
+								</a>
+							</li>
+													<li >
+								<a href="http://www.godo.co.kr/echost/global/overseas-pg-intro.gd"  data-key="echost_global" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/shop_global.png" alt="글로벌서비스">
+								</a>
+							</li>
+													<li >
+								<a href="http://www.godo.co.kr/echost/tech/solution-upgrade-intro.gd"  data-key="echost_tech" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/shop_tech.png" alt="기술지원">
+								</a>
+							</li>
+													<li class="nounder">
+								<a href="https://www.godo.co.kr/echost/tech/third-party-intro.gd"  data-key="echost_move" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/shop_relocate.png" alt="고도로이전">
+								</a>
+							</li>
+											</ul>
+									<ul class="hosting">
+						<li><a href="javascript:void(0);" class="all_menu"><img src="//img.godo.co.kr/godomall/header/common/all_menu.png" alt="전체보기"></a></li>													<li >
+								<a href="http://hosting.godo.co.kr/serverhosting/serverhosting_sub_main.php"  data-key="hosting_serverhosting" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/hosting_server.png" alt="서버 호스팅">
+								</a>
+							</li>
+													<li >
+								<a href="http://hosting.godo.co.kr/imghosting/imghosting_info.php"  data-key="hosting_webhosting" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/hosting_web.png" alt="웹 호스팅">
+								</a>
+							</li>
+													<li >
+								<a href="http://hosting.godo.co.kr/valueadd/enterprise_securityManagement.php"  data-key="hosting_secure" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/hosting_sec.png" alt="보안서비스">
+								</a>
+							</li>
+													<li >
+								<a href="http://hosting.godo.co.kr/valueadd/loadbalancing_service_intro.php"  data-key="hosting_addservice" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/hosting_add.png" alt="부가서비스">
+								</a>
+							</li>
+													<li class="nounder">
+								<a href="https://cloudweb.godo.co.kr/"  data-key="hosting_clude" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/hosting_cloud.png" alt="클라우드">
+								</a>
+							</li>
+													<li class="nounder">
+								<a href="http://b2bweb.godo.co.kr/"  data-key="hosting_b2b" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/hosting_part.png" alt="호스팅 파트너센터">
+								</a>
+							</li>
+											</ul>
+									<ul class="domain">
+						<li><a href="javascript:void(0);" class="all_menu"><img src="//img.godo.co.kr/godomall/header/common/all_menu.png" alt="전체보기"></a></li>													<li >
+								<a href="http://domain.godo.co.kr/regist/domain_search_2014.php"  data-key="domain_regist" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/domain_domain.png" alt="도메인등록">
+								</a>
+							</li>
+													<li >
+								<a href="http://domain.godo.co.kr/info/domain_info_05_1.php"  data-key="domain_mygodo" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/domain_admin.png" alt="도메인관리">
+								</a>
+							</li>
+													<li >
+								<a href="http://domain.godo.co.kr/info/domain_info_03_1.php"  data-key="domain_move" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/domain_relocate.png" alt="기관이전">
+								</a>
+							</li>
+													<li >
+								<a href="http://domain.godo.co.kr/info/domain_info_04_2.php"  data-key="domain_addservice" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/domain_add.png" alt="부가서비스">
+								</a>
+							</li>
+											</ul>
+									<ul class="design">
+						<li><a href="javascript:void(0);" class="all_menu"><img src="//img.godo.co.kr/godomall/header/common/all_menu.png" alt="전체보기"></a></li>													<li >
+								<a href="http://design.godo.co.kr/goods/goods-list.php"  data-key="design_shopskin" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/design_shop.png" alt="쇼핑몰스킨">
+								</a>
+							</li>
+													<li >
+								<a href="http://design.godo.co.kr/goods/goods-list.php?type=design"  data-key="design_goods" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/design_part.png" alt="부분디자인">
+								</a>
+							</li>
+													<li >
+								<a href="http://design.godo.co.kr/custom/custom-list.php"  data-key="design_custom" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/design_custom.png" alt="맞춤디자인">
+								</a>
+							</li>
+													<li class="nounder">
+								<a href="http://design.godo.co.kr/brand/index.php"  data-key="design_brand" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/design_brand.png" alt="브랜드샵">
+								</a>
+							</li>
+													<li >
+								<a href="http://design.godo.co.kr/ranking/main-list.php?type=bestSeller"  data-key="design_promotion" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/design_top20.png" alt="TOP20">
+								</a>
+							</li>
+											</ul>
+									<ul class="marketing">
+						<li><a href="javascript:void(0);" class="all_menu"><img src="//img.godo.co.kr/godomall/header/common/all_menu.png" alt="전체보기"></a></li>													<li >
+								<a href="http://marketing.godo.co.kr/naver_pass.php"  data-key="marketing_agency" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/marketing_stand.png" alt="입점광고">
+								</a>
+							</li>
+													<li >
+								<a href="http://marketing.godo.co.kr/keyword_integrate.php"  data-key="marketing_search" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/marketing_search.png" alt="검색광고">
+								</a>
+							</li>
+													<li >
+								<a href="http://marketing.godo.co.kr/naver_trend.php"  data-key="marketing_shopping" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/marketing_shop.png" alt="쇼핑광고">
+								</a>
+							</li>
+													<li >
+								<a href="http://marketing.godo.co.kr/portalB.php"  data-key="marketing_banner" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/marketing_ban.png" alt="배너/리타겟팅광고">
+								</a>
+							</li>
+													<li >
+								<a href="http://marketing.godo.co.kr/viral.php"  data-key="marketing_mobile" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/marketing_mobile.png" alt="모바일/SNS/바이럴">
+								</a>
+							</li>
+											</ul>
+									<ul class="edu">
+						<li><a href="javascript:void(0);" class="all_menu"><img src="//img.godo.co.kr/godomall/header/common/all_menu.png" alt="전체보기"></a></li>													<li class="nounder">
+								<a href="http://edu.godo.co.kr/lecture/list.php"  data-key="edu_lecture" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/academy_edu.png" alt="아카데미 교육">
+								</a>
+							</li>
+													<li >
+								<a href="http://edu.godo.co.kr/intro/history.php"  data-key="edu_intro" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/academy_intro.png" alt="아카데미 소개">
+								</a>
+							</li>
+													<li >
+								<a href="http://edu.godo.co.kr/study/enamoo-video-list.php"  data-key="edu_study" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/academy_guide.png" alt="아카데미 활용가이드">
+								</a>
+							</li>
+													<li >
+								<a href="http://edu.godo.co.kr/license/license-intro.php"  data-key="edu_license" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/academy_li.png" alt="쇼핑몰 자격증">
+								</a>
+							</li>
+													<li class="nounder">
+								<a href="http://study.godo.co.kr/"  data-key="edu_movie" target="_blank">
+									<img src="//img.godo.co.kr/godomall/header/common/academy_mov.png" alt="동영상교육">
+								</a>
+							</li>
+													<li class="nounder">
+								<a href="http://edu.godo.co.kr/lecture/list.php?mode=calendar#aCal"  data-key="edu_month" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/academy_month.png" alt="이달의 교육 보기">
+								</a>
+							</li>
+													<li class="nounder">
+								<a href="javascript:void(0);"  data-key="edu_fast" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/academy_fast.png" alt="빠른 교육 안내">
+								</a>
+							</li>
+											</ul>
+									<ul class="mygodo">
+																			<li class="nounder">
+								<a href="http://www.godo.co.kr/mygodo/myGodo_shopMain.php"  data-key="mygodo_shop" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/mygodo_shop.png" alt="쇼핑몰관리">
+								</a>
+							</li>
+													<li class="nounder">
+								<a href="http://www.godo.co.kr/mygodo_webhosting/index.php"  data-key="mygodo_hosting" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/mygodo_hosting.png" alt="호스팅관리">
+								</a>
+							</li>
+													<li class="nounder">
+								<a href="http://domain.godo.co.kr/mygodo/mygodo_domain_list.php"  data-key="mygodo_domain" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/mygodo_domain.png" alt="도메인관리">
+								</a>
+							</li>
+													<li class="nounder">
+								<a href="http://www.godo.co.kr/mygodo/design/order-list.gd"  data-key="mygodo_design" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/mygodo_design.png" alt="디자인센터">
+								</a>
+							</li>
+													<li class="nounder">
+								<a href="http://www.godo.co.kr/mygodo/my_godo_edu.html"  data-key="mygodo_edu" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/mygodo_edu.png" alt="아카데미관리">
+								</a>
+							</li>
+													<li class="nounder">
+								<a href="http://www.godo.co.kr/mygodo/my_paylist.html"  data-key="mygodo_member" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/mygodo_mem.png" alt="회원/결제/쿠폰">
+								</a>
+							</li>
+													<li class="nounder">
+								<a href="http://www.godo.co.kr/mygodo/helper.html"  data-key="mygodo_helper" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/mygodo_qna.png" alt="1:1문의/답변">
+								</a>
+							</li>
+													<li class="nounder">
+								<a href="http://www.godo.co.kr/mygodo/sms/intro.gd"  data-key="mygodo_sms" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/mygodo_sms.png" alt="SMS 발신번호 신청/관리">
+								</a>
+							</li>
+											</ul>
+									<ul class="customer">
+																			<li class="nounder">
+								<a href="http://www.godo.co.kr/customer/manual/list.gd"  data-key="customer_guide" target="_blank">
+									<img src="//img.godo.co.kr/godomall/header/common/custom_guide.png" alt="나를 위한 이용가이드">
+								</a>
+							</li>
+													<li class="nounder">
+								<a href="http://www.godo.co.kr/customer/faq-list.gd"  data-key="customer_faq" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/custom_often.png" alt="자주 묻는 질문">
+								</a>
+							</li>
+													<li class="nounder">
+								<a href="http://www.godo.co.kr/mygodo/helper_write.html"  data-key="customer_helper" target="_blank">
+									<img src="//img.godo.co.kr/godomall/header/common/custom_qna.png" alt="1:1문의">
+								</a>
+							</li>
+													<li class="nounder">
+								<a href="http://manual.godomall5.godomall.com/data/manual_view.php"  data-key="customer_manual" target="_blank">
+									<img src="//img.godo.co.kr/godomall/header/common/custom_manual.png" alt="매뉴얼">
+								</a>
+							</li>
+													<li class="nounder">
+								<a href="http://www.godo.co.kr/customer_center/patch.php"  data-key="customer_patch" target="_blank">
+									<img src="//img.godo.co.kr/godomall/header/common/custom_patch.png" alt="패치&업그레이드">
+								</a>
+							</li>
+													<li class="nounder">
+								<a href="http://www.godo.co.kr/customer/voice-list.gd"  data-key="customer_voice" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/custom_custom.png" alt="고객의소리">
+								</a>
+							</li>
+													<li class="nounder">
+								<a href="http://www.godo.co.kr/customer/board-list.gd?type=notice"  data-key="customer_notice" target="">
+									<img src="//img.godo.co.kr/godomall/header/common/custom_inform.png" alt="알립니다">
+								</a>
+							</li>
+											</ul>
+							
+		</div>
+	</div>
+
+	<!-- 전체메뉴-->
+						<div class="all_menu_wrap echost">
+				<ul class="all_menu_box">
+																		<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/shop_shop.png" alt="쇼핑몰 솔루션"></h2>
+								<ul>
+																														<li><a href="http://www.godo.co.kr/echost/solution/godomall-standard-intro.gd" target="">고도몰5 standard</a></li>
+																					<li><a href="http://www.godo.co.kr/echost/solution/godomall-pro-intro.gd" target="">고도몰5 pro</a></li>
+																					<li><a href="http://www.godo.co.kr/echost/solution/enamoo-self-intro.gd" target="">e나무 독립형</a></li>
+																											</ul>
+							</li>
+																								<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/shop_power.png" alt="파워서비스"></h2>
+								<ul>
+																														<li><a href="http://www.godo.co.kr/echost/power/add/payment/pg-intro.gd" target="">부가서비스</a></li>
+																					<li><a href="http://plus.godo.co.kr/" target="_blank">플러스샵</a></li>
+																					<li><a href="http://www.godo.co.kr/echost/tuning/main.gd" target="_blank">튜닝센터</a></li>
+																					<li><a href="http://www.godo.co.kr/echost/power/maintenance-intro.gd" target="">유지보수 서비스</a></li>
+																					<li><a href="https://www.godo.co.kr/promotion/hae-dream.gd" target="_blank">해드림(쇼핑몰제작)</a></li>
+																					<li><a href="http://www.godo.co.kr/promotion/help/help.gd" target="_blank">헬프마켓</a></li>
+																											</ul>
+							</li>
+																								<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/shop_mobile.png" alt="모바일서비스"></h2>
+								<ul>
+																														<li><a href="http://www.godo.co.kr/echost/mobile/mobile-shop-intro.gd" target="">모바일샵</a></li>
+																					<li><a href="http://www.godo.co.kr/echost/mobile/admin-app-intro.gd" target="">관리자 APP</a></li>
+																					<li><a href="http://www.godo.co.kr/echost/mobile/smart-app-intro.gd" target="">스마트앱</a></li>
+																					<li><a href="http://www.godo.co.kr/echost/mobile/smart-skin-intro.gd" target="">스마트스킨</a></li>
+																											</ul>
+							</li>
+																								<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/shop_global.png" alt="글로벌서비스"></h2>
+								<ul>
+																														<li><a href="http://www.godo.co.kr/promotion/global/global-shop.gd" target="_blank">글로벌 쇼핑몰</a></li>
+																					<li><a href="http://www.godo.co.kr/echost/global/overseas-pg-intro.gd" target="">해외 결제</a></li>
+																					<li><a href="http://www.godo.co.kr/echost/global/overseas-purchase-intro.gd" target="">해외구매대행</a></li>
+																					<li><a href="http://www.godo.co.kr/echost/global/overseas-delivery-intro.gd" target="">해외배송대행</a></li>
+																					<li><a href="http://www.godo.co.kr/echost/global/overseas-translate-intro.gd" target="">글로벌 번역 서비스</a></li>
+																											</ul>
+							</li>
+																								<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/shop_tech.png" alt="기술지원"></h2>
+								<ul>
+																														<li><a href="http://www.godo.co.kr/echost/tech/solution-upgrade-intro.gd" target="">쇼핑몰 이전</a></li>
+																					<li><a href="http://www.godo.co.kr/echost/tech/program-reset-intro.gd" target="">프로그램단 재설치</a></li>
+																					<li><a href="http://www.godo.co.kr/echost/tech/solution-reset-intro.gd" target="">솔루션 재설치</a></li>
+																					<li><a href="http://www.godo.co.kr/echost/tech/copy-intro.gd" target="">데이터 복사</a></li>
+																					<li><a href="http://devcenter.godo.co.kr/" target="_blank">개발자센터</a></li>
+																											</ul>
+							</li>
+																								<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/shop_relocate.png" alt="고도로이전"></h2>
+								<ul>
+																			<li><a href="https://www.godo.co.kr/echost/tech/third-party-intro.gd" target="">고도로이전</a></li>
+																	</ul>
+							</li>
+															</ul>
+				<div class="menu_shadow"></div>
+			</div>
+								<div class="all_menu_wrap hosting">
+				<ul class="all_menu_box">
+																		<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/hosting_server.png" alt="서버 호스팅"></h2>
+								<ul>
+																														<li><a href="http://hosting.godo.co.kr/serverhosting/serverhosting_sub_main.php" target="">서버 호스팅</a></li>
+																					<li><a href="http://hosting.godo.co.kr/serverhosting/colocation_product.php" target="">코로케이션</a></li>
+																					<li><a href="http://hosting.godo.co.kr/serverhosting/management_intro.php" target="">관리대행 서비스</a></li>
+																					<li><a href="http://hosting.godo.co.kr/serverhosting/idc_info.php" target="">IDC 소개</a></li>
+																					<li><a href="http://hosting.godo.co.kr/serverhosting/landing_security.php" target="">보안서비스</a></li>
+																					<li><a href="http://hosting.godo.co.kr/serverhosting/webservice_counsel.php" target="">웹서비스 구축</a></li>
+																											</ul>
+							</li>
+																								<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/hosting_web.png" alt="웹 호스팅"></h2>
+								<ul>
+																														<li><a href="http://hosting.godo.co.kr/imghosting/imghosting_info.php" target="">이미지 호스팅</a></li>
+																					<li><a href="http://hosting.godo.co.kr/webhosting/webhosting_service_info.php" target="">리눅스 웹 호스팅</a></li>
+																					<li><a href="http://hosting.godo.co.kr/winhosting/winhosting_service_info.php" target="">윈도우 웹 호스팅</a></li>
+																					<li><a href="http://hosting.godo.co.kr/iwebhosting/info.php" target="">독립 웹 호스팅</a></li>
+																					<li><a href="http://hosting.godo.co.kr/streaminghosting/streaminghosting_info.php" target="">동영상 호스팅</a></li>
+																					<li><a href="http://hosting.godo.co.kr/dbhosting/dbhosting_info.php" target="">DB 호스팅</a></li>
+																					<li><a href="http://hosting.godo.co.kr/smshosting/smshosting_info.php" target="">SMS 호스팅</a></li>
+																					<li><a href="http://hosting.godo.co.kr/shophosting/shophosting_info.php" target="">쇼핑몰 호스팅</a></li>
+																											</ul>
+							</li>
+																								<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/hosting_sec.png" alt="보안서비스"></h2>
+								<ul>
+																														<li><a href="http://hosting.godo.co.kr/valueadd/enterprise_securityManagement.php" target="">통합보안 관제 서비스</a></li>
+																					<li><a href="http://hosting.godo.co.kr/valueadd/ssl_service.php" target="">SSL 보안서버</a></li>
+																					<li><a href="http://hosting.godo.co.kr/valueadd/firewall_service.php" target="">웹 방화벽</a></li>
+																					<li><a href="http://hosting.godo.co.kr/valueadd/ips_info.php" target="">IPS(침입방지시스템)</a></li>
+																					<li><a href="http://hosting.godo.co.kr/valueadd/security_service.php" target="">방화벽 서비스</a></li>
+																					<li><a href="http://hosting.godo.co.kr/valueadd/utm_info.php" target="">UTM(통합보안서비스)</a></li>
+																					<li><a href="http://hosting.godo.co.kr/valueadd/ddos_info.php" target="">DDOS 보안존</a></li>
+																					<li><a href="http://hosting.godo.co.kr/valueadd/consulting_security.php" target="">보안컨설팅</a></li>
+																					<li><a href="http://hosting.godo.co.kr/valueadd/office_security.php" target="">오피스 방화벽</a></li>
+																											</ul>
+							</li>
+																								<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/hosting_add.png" alt="부가서비스"></h2>
+								<ul>
+																														<li><a href="http://hosting.godo.co.kr/valueadd/loadbalancing_service_intro.php" target="">로드밸런싱</a></li>
+																					<li><a href="http://hosting.godo.co.kr/valueadd/tech_support_windows.php" target="">기술지원서비스</a></li>
+																					<li><a href="http://hosting.godo.co.kr/software/software_info.php" target="">소프트웨어 라이선스</a></li>
+																					<li><a href="http://hosting.godo.co.kr/valueadd/signra.php" target="">공인인증서</a></li>
+																					<li><a href="http://hosting.godo.co.kr/webhosting_transreq/webhosting_transreq_intro.php" target="">웹 호스팅 타사이전 신청</a></li>
+																					<li><a href="http://hosting.godo.co.kr/valueadd/homez_service.php" target="">고도홈즈&홈페이지 제작</a></li>
+																											</ul>
+							</li>
+																								<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/hosting_cloud.png" alt="클라우드"></h2>
+								<ul>
+																			<li><a href="https://cloudweb.godo.co.kr/" target="">클라우드</a></li>
+																	</ul>
+							</li>
+																								<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/hosting_part.png" alt="호스팅 파트너센터"></h2>
+								<ul>
+																			<li><a href="http://b2bweb.godo.co.kr/" target="">호스팅 파트너센터</a></li>
+																	</ul>
+							</li>
+															</ul>
+				<div class="menu_shadow"></div>
+			</div>
+								<div class="all_menu_wrap domain">
+				<ul class="all_menu_box">
+																		<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/domain_domain.png" alt="도메인등록"></h2>
+								<ul>
+																														<li><a href="http://domain.godo.co.kr/regist/domain_search_2014.php" target="">도메인 검색/등록</a></li>
+																					<li><a href="http://domain.godo.co.kr/info/domain_info_01_1.php" target="">도메인 종류/비용</a></li>
+																											</ul>
+							</li>
+																								<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/domain_admin.png" alt="도메인관리"></h2>
+								<ul>
+																														<li><a href="http://domain.godo.co.kr/info/domain_info_05_1.php" target="">로그인 없이 연장</a></li>
+																					<li><a href="http://domain.godo.co.kr/mygodo/mygodo_domain_list_000.php" target="_blank">도메인 연장</a></li>
+																					<li><a href="http://domain.godo.co.kr/mygodo/mygodo_domain_list_02.php" target="_blank">도메인 정보변경</a></li>
+																					<li><a href="http://domain.godo.co.kr/mygodo/mygodo_domain_list_01.php" target="_blank">네임서버 변경</a></li>
+																					<li><a href="http://domain.godo.co.kr/mygodo/mygodo_domain_list_07.php" target="_blank">제휴업체 변경</a></li>
+																											</ul>
+							</li>
+																								<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/domain_relocate.png" alt="기관이전"></h2>
+								<ul>
+																														<li><a href="http://domain.godo.co.kr/info/domain_info_03_1.php" target="">고도로 이전</a></li>
+																					<li><a href="http://domain.godo.co.kr/mygodo/mygodo_domain_list.php" target="_blank">기관이전 현황</a></li>
+																					<li><a href="http://domain.godo.co.kr/mygodo/mygodo_domain_list_04.php" target="_blank">소유권 이전</a></li>
+																											</ul>
+							</li>
+																								<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/domain_add.png" alt="부가서비스"></h2>
+								<ul>
+																														<li><a href="http://domain.godo.co.kr/info/domain_info_04_2.php" target="">포워딩 서비스</a></li>
+																					<li><a href="http://domain.godo.co.kr/info/domain_info_04_1.php" target="">파킹 서비스</a></li>
+																					<li><a href="http://domain.godo.co.kr/info/domain_info_04_3.php" target="">서비스 자동연결</a></li>
+																					<li><a href="http://domain.godo.co.kr/info/domain_info_04_4.php" target="">MX값 자동설정</a></li>
+																											</ul>
+							</li>
+															</ul>
+				<div class="menu_shadow"></div>
+			</div>
+								<div class="all_menu_wrap design">
+				<ul class="all_menu_box">
+																		<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/design_shop.png" alt="쇼핑몰스킨"></h2>
+								<ul>
+																														<li><a href="http://design.godo.co.kr/goods/goods-list.php" target="">전체</a></li>
+																					<li><a href="http://design.godo.co.kr/goods/goods-list.php?type=pcskin" target="">PC스킨</a></li>
+																					<li><a href="http://design.godo.co.kr/goods/goods-list.php?type=mobileskin" target="">모바일스킨</a></li>
+																					<li><a href="http://design.godo.co.kr/goods/goods-list.php?type=both" target="">PC+모바일 세트</a></li>
+																					<li><a href="http://design.godo.co.kr/goods/freeskin-list.php" target="">무료디자인스킨</a></li>
+																											</ul>
+							</li>
+																								<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/design_part.png" alt="부분디자인"></h2>
+								<ul>
+																														<li><a href="http://design.godo.co.kr/goods/goods-list.php?type=design" target="">전체</a></li>
+																					<li><a href="http://design.godo.co.kr/goods/goods-list.php?dsGoodsCateNo=201000000&type=design" target="">팝업이미지</a></li>
+																					<li><a href="http://design.godo.co.kr/goods/goods-list.php?dsGoodsCateNo=205000000&type=design" target="">상품상세이미지</a></li>
+																					<li><a href="http://design.godo.co.kr/goods/goods-list.php?dsGoodsCateNo=208000000&type=design" target="">상품/모델사이즈표</a></li>
+																					<li><a href="http://design.godo.co.kr/goods/goods-list.php?dsGoodsCateNo=204000000&type=design" target="">배너이미지</a></li>
+																					<li><a href="http://design.godo.co.kr/goods/goods-list.php?dsGoodsCateNo=207000000&type=design" target="">아이콘</a></li>
+																					<li><a href="http://design.godo.co.kr/goods/goods-list.php?dsGoodsCateNo=214000000&type=design" target="">기타</a></li>
+																					<li><a href="http://design.godo.co.kr/custom/free-font.php" target="">무료폰트</a></li>
+																											</ul>
+							</li>
+																								<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/design_custom.png" alt="맞춤디자인"></h2>
+								<ul>
+																														<li><a href="http://design.godo.co.kr/custom/custom-list.php" target="">전체</a></li>
+																					<li><a href="http://design.godo.co.kr/custom/custom-list.php?dsGoodsCateNo=301000000" target="">맞춤디자인</a></li>
+																					<li><a href="http://design.godo.co.kr/custom/custom-list.php?dsGoodsCateNo=302000000" target="">반맞춤디자인</a></li>
+																					<li><a href="http://design.godo.co.kr/custom/custom-list.php?dsGoodsCateNo=303000000" target="">페이지맞춤</a></li>
+																					<li><a href="http://design.godo.co.kr/custom/custom-list.php?dsGoodsCateNo=304000000" target="">코딩서비스</a></li>
+																											</ul>
+							</li>
+																								<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/design_brand.png" alt="브랜드샵"></h2>
+								<ul>
+																			<li><a href="http://design.godo.co.kr/brand/index.php" target="">브랜드샵</a></li>
+																	</ul>
+							</li>
+																								<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/design_top20.png" alt="TOP20"></h2>
+								<ul>
+																														<li><a href="http://design.godo.co.kr/ranking/main-list.php?type=bestSeller" target="">베스트인기</a></li>
+																					<li><a href="http://design.godo.co.kr/ranking/main-list.php?type=hotClick" target="">핫클릭</a></li>
+																					<li><a href="http://design.godo.co.kr/ranking/promotion-list.php" target="">우수디자인</a></li>
+																											</ul>
+							</li>
+															</ul>
+				<div class="menu_shadow"></div>
+			</div>
+								<div class="all_menu_wrap marketing">
+				<ul class="all_menu_box">
+																		<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/marketing_stand.png" alt="입점광고"></h2>
+								<ul>
+																														<li><a href="http://marketing.godo.co.kr/naver_pass.php" target="">입점대행 서비스</a></li>
+																					<li><a href="http://marketing.godo.co.kr/naver_kin_reg.php" target="">네이버 쇼핑</a></li>
+																					<li><a href="http://marketing.godo.co.kr/naver_pay.php" target="">네이버 페이</a></li>
+																					<li><a href="http://www.godo.co.kr/echost/power/add/payment/payco-intro.gd" target="_blank">페이코</a></li>
+																					<li><a href="http://marketing.godo.co.kr/daum_shoppinghow_reg.php" target="">다음 쇼핑하우</a></li>
+																											</ul>
+							</li>
+																								<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/marketing_search.png" alt="검색광고"></h2>
+								<ul>
+																														<li><a href="http://marketing.godo.co.kr/keyword_integrate.php" target="">통합 키워드광고</a></li>
+																					<li><a href="http://marketing.godo.co.kr/brand_search.php" target="">브랜드 검색</a></li>
+																					<li><a href="http://marketing.godo.co.kr/neoclick.php" target="">네오클릭</a></li>
+																					<li><a href="http://marketing.godo.co.kr/naver_shopping.php" target="">네이버쇼핑 검색광고</a></li>
+																											</ul>
+							</li>
+																								<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/marketing_shop.png" alt="쇼핑광고"></h2>
+								<ul>
+																														<li><a href="http://marketing.godo.co.kr/naver_trend.php" target="">네이버 쇼핑박스</a></li>
+																					<li><a href="http://marketing.godo.co.kr/daum_tab1_reg.php" target="">다음 쇼핑박스</a></li>
+																					<li><a href="http://marketing.godo.co.kr/daum_mobile_reg.php" target="">다음 모바일 쇼핑박스</a></li>
+																					<li><a href="http://marketing.godo.co.kr/nate_tab1.php" target="">NATE 쇼핑박스</a></li>
+																					<li><a href="http://marketing.godo.co.kr/zum_box.php" target="">ZUM 쇼핑박스</a></li>
+																											</ul>
+							</li>
+																								<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/marketing_ban.png" alt="배너/리타겟팅광고"></h2>
+								<ul>
+																														<li><a href="http://marketing.godo.co.kr/portalB.php" target="">포털 배너광고</a></li>
+																					<li><a href="http://marketing.godo.co.kr/criteo.php" target="">리타겟팅광고</a></li>
+																											</ul>
+							</li>
+																								<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/marketing_mobile.png" alt="모바일/SNS/바이럴"></h2>
+								<ul>
+																														<li><a href="http://marketing.godo.co.kr/viral.php" target="">바이럴 마케팅</a></li>
+																					<li><a href="http://marketing.godo.co.kr/fas.php" target="">페이스북</a></li>
+																					<li><a href="http://marketing.godo.co.kr/video_ad.php" target="">동영상컨텐츠 광고</a></li>
+																											</ul>
+							</li>
+															</ul>
+				<div class="menu_shadow"></div>
+			</div>
+								<div class="all_menu_wrap edu">
+				<ul class="all_menu_box">
+																		<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/academy_edu.png" alt="아카데미 교육"></h2>
+								<ul>
+																			<li><a href="http://edu.godo.co.kr/lecture/list.php" target="">아카데미 교육</a></li>
+																	</ul>
+							</li>
+																								<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/academy_intro.png" alt="아카데미 소개"></h2>
+								<ul>
+																														<li><a href="http://edu.godo.co.kr/intro/history.php" target="">아카데미 연혁</a></li>
+																					<li><a href="http://edu.godo.co.kr/intro/place.php" target="">기관 소개</a></li>
+																					<li><a href="http://edu.godo.co.kr/intro/lecturer.php" target="">강사 소개</a></li>
+																					<li><a href="http://edu.godo.co.kr/intro/news-list.php" target="">아카데미 소식</a></li>
+																					<li><a href="http://edu.godo.co.kr/intro/partner.php" target="">교육파트너</a></li>
+																											</ul>
+							</li>
+																								<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/academy_guide.png" alt="아카데미 활용가이드"></h2>
+								<ul>
+																														<li><a href="http://edu.godo.co.kr/study/enamoo-video-list.php" target="">쇼핑몰 활용가이드</a></li>
+																					<li><a href="http://edu.godo.co.kr/student/review-list.php" target="">수강후기</a></li>
+																					<li><a href="http://edu.godo.co.kr/student/openbiz-list.php" target="">수료생 창업 현황</a></li>
+																					<li><a href="http://edu.godo.co.kr/student/recruit-list.php" target="">쇼핑몰 구인 구직</a></li>
+																											</ul>
+							</li>
+																								<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/academy_li.png" alt="쇼핑몰 자격증"></h2>
+								<ul>
+																														<li><a href="http://edu.godo.co.kr/license/license-intro.php" target="">자격증 소개</a></li>
+																					<li><a href="http://edu.godo.co.kr/license/license-list.php" target="">시험일정/원서접수</a></li>
+																					<li><a href="http://www.godo.co.kr/mygodo/my_godo_license.html" target="_blank">신청/합격조회</a></li>
+																					<li><a href="http://edu.godo.co.kr/license/license-notice-list.php" target="">공지사항</a></li>
+																											</ul>
+							</li>
+																								<li>
+								<h2><img src="//img.godo.co.kr/godomall/header/common/academy_mov.png" alt="동영상교육"></h2>
+								<ul>
+																			<li><a href="http://study.godo.co.kr/" target="_blank">동영상교육</a></li>
+																	</ul>
+							</li>
+																																					</ul>
+				<div class="menu_shadow"></div>
+			</div>
+										<!-- //전체메뉴-->
+
+	<!-- dep02 오버시 나오는 메뉴-->
+										<div class="sub_dep03 echost_solution">
+					<div class="dep03_box">
+						<div class="dep03_title"><img src="//img.godo.co.kr/godomall/header/sub/h_shop_shop.png" alt="쇼핑몰 솔루션"></div>
+						<div class="dep03_menu">
+							<ul>
+																	<li>
+										<a href="http://www.godo.co.kr/echost/solution/godomall-standard-intro.gd" target="">
+											고도몰5 standard																					</a>
+									</li>
+																	<li>
+										<a href="http://www.godo.co.kr/echost/solution/godomall-pro-intro.gd" target="">
+											고도몰5 pro																					</a>
+									</li>
+																	<li>
+										<a href="http://www.godo.co.kr/echost/solution/enamoo-self-intro.gd" target="">
+											e나무 독립형																					</a>
+									</li>
+															</ul>
+							<dl>
+								<dt><img src="//img.godo.co.kr/godomall/header/sub/ico_new.png" alt="추천상품"></dt>
+								<dd>
+									<a href="http://www.godo.co.kr/echost/power/add/marketing/acecounter2-intro.gd" target="">
+										고도몰5, 에이스카운터 II 자동설치 및 무료 서비스 제공!
+									</a>
+								</dd>
+							</dl>
+						</div>
+													<a href="http://www.godo.co.kr/echost/solution/godomall-pro-intro.gd" target="">
+								<img src="//img.godo.co.kr/godomall/header/sub/ban_shop_shop.png" alt="고도몰5 pro">
+							</a>
+											</div>
+					<div class="menu_shadow"></div>
+				</div>
+												<div class="sub_dep03 echost_power">
+					<div class="dep03_box">
+						<div class="dep03_title"><img src="//img.godo.co.kr/godomall/header/sub/h_shop_power.png" alt="파워서비스"></div>
+						<div class="dep03_menu">
+							<ul>
+																	<li>
+										<a href="http://www.godo.co.kr/echost/power/add/payment/pg-intro.gd" target="">
+											부가서비스																					</a>
+									</li>
+																	<li>
+										<a href="http://plus.godo.co.kr/" target="_blank">
+											플러스샵																					</a>
+									</li>
+																	<li>
+										<a href="http://www.godo.co.kr/echost/tuning/main.gd" target="_blank">
+											튜닝센터																					</a>
+									</li>
+																	<li>
+										<a href="http://www.godo.co.kr/echost/power/maintenance-intro.gd" target="">
+											유지보수 서비스																					</a>
+									</li>
+																	<li>
+										<a href="https://www.godo.co.kr/promotion/hae-dream.gd" target="_blank">
+											해드림(쇼핑몰제작)																					</a>
+									</li>
+																	<li>
+										<a href="http://www.godo.co.kr/promotion/help/help.gd" target="_blank">
+											헬프마켓																					</a>
+									</li>
+															</ul>
+							<dl>
+								<dt><img src="//img.godo.co.kr/godomall/header/sub/ico_rec.png" alt="추천상품"></dt>
+								<dd>
+									<a href="http://www.godo.co.kr/echost/power/add/member/certification-intro.gd" target="">
+										안전하고 간편한 본인인증, 휴대폰 본인확인 서비스
+									</a>
+								</dd>
+							</dl>
+						</div>
+													<a href="http://www.godo.co.kr/echost/power/add/convenience/packing-intro.gd" target="">
+								<img src="//img.godo.co.kr/godomall/header/sub/ban_shop_power_box.png" alt="택배박스">
+							</a>
+											</div>
+					<div class="menu_shadow"></div>
+				</div>
+												<div class="sub_dep03 echost_mobile">
+					<div class="dep03_box">
+						<div class="dep03_title"><img src="//img.godo.co.kr/godomall/header/sub/h_shop_mobile.png" alt="모바일서비스"></div>
+						<div class="dep03_menu">
+							<ul>
+																	<li>
+										<a href="http://www.godo.co.kr/echost/mobile/mobile-shop-intro.gd" target="">
+											모바일샵																					</a>
+									</li>
+																	<li>
+										<a href="http://www.godo.co.kr/echost/mobile/admin-app-intro.gd" target="">
+											관리자 APP																					</a>
+									</li>
+																	<li>
+										<a href="http://www.godo.co.kr/echost/mobile/smart-app-intro.gd" target="">
+											스마트앱																					</a>
+									</li>
+																	<li>
+										<a href="http://www.godo.co.kr/echost/mobile/smart-skin-intro.gd" target="">
+											스마트스킨																					</a>
+									</li>
+															</ul>
+							<dl>
+								<dt><img src="//img.godo.co.kr/godomall/header/sub/ico_rec.png" alt="추천상품"></dt>
+								<dd>
+									<a href="http://www.godo.co.kr/echost/mobile/admin-app-intro.gd" target="">
+										쇼핑몰 관리+실시간 푸시 알림 OK! 고도몰5 관리자APP
+									</a>
+								</dd>
+							</dl>
+						</div>
+													<a href="http://www.godo.co.kr/echost/mobile/smart-app-intro.gd" target="">
+								<img src="//img.godo.co.kr/godomall/header/sub/ban_shop_mobile.png" alt="스마트앱 서비스">
+							</a>
+											</div>
+					<div class="menu_shadow"></div>
+				</div>
+												<div class="sub_dep03 echost_global">
+					<div class="dep03_box">
+						<div class="dep03_title"><img src="//img.godo.co.kr/godomall/header/sub/h_shop_global.png" alt="글로벌서비스"></div>
+						<div class="dep03_menu">
+							<ul>
+																	<li>
+										<a href="http://www.godo.co.kr/promotion/global/global-shop.gd" target="_blank">
+											글로벌 쇼핑몰																					</a>
+									</li>
+																	<li>
+										<a href="http://www.godo.co.kr/echost/global/overseas-pg-intro.gd" target="">
+											해외 결제																					</a>
+									</li>
+																	<li>
+										<a href="http://www.godo.co.kr/echost/global/overseas-purchase-intro.gd" target="">
+											해외구매대행																					</a>
+									</li>
+																	<li>
+										<a href="http://www.godo.co.kr/echost/global/overseas-delivery-intro.gd" target="">
+											해외배송대행																					</a>
+									</li>
+																	<li>
+										<a href="http://www.godo.co.kr/echost/global/overseas-translate-intro.gd" target="">
+											글로벌 번역 서비스																					</a>
+									</li>
+															</ul>
+							<dl>
+								<dt><img src="//img.godo.co.kr/godomall/header/sub/ico_rec.png" alt="추천상품"></dt>
+								<dd>
+									<a href="http://www.godo.co.kr/echost/global/overseas-delivery-intro.gd" target="">
+										전 세계 주요 국가 배송! 저렴한 배송비로 안전하고 빠르게
+									</a>
+								</dd>
+							</dl>
+						</div>
+													<a href="http://www.godo.co.kr/echost/global/overseas-purchase-apply.gd" target="">
+								<img src="//img.godo.co.kr/godomall/header/sub/ban_shop_global_event.png" alt="해외구매대행">
+							</a>
+											</div>
+					<div class="menu_shadow"></div>
+				</div>
+												<div class="sub_dep03 echost_tech">
+					<div class="dep03_box">
+						<div class="dep03_title"><img src="//img.godo.co.kr/godomall/header/sub/h_shop_tech.png" alt="기술지원"></div>
+						<div class="dep03_menu">
+							<ul>
+																	<li>
+										<a href="http://www.godo.co.kr/echost/tech/solution-upgrade-intro.gd" target="">
+											쇼핑몰 이전																					</a>
+									</li>
+																	<li>
+										<a href="http://www.godo.co.kr/echost/tech/program-reset-intro.gd" target="">
+											프로그램단 재설치																					</a>
+									</li>
+																	<li>
+										<a href="http://www.godo.co.kr/echost/tech/solution-reset-intro.gd" target="">
+											솔루션 재설치																					</a>
+									</li>
+																	<li>
+										<a href="http://www.godo.co.kr/echost/tech/copy-intro.gd" target="">
+											데이터 복사																					</a>
+									</li>
+																	<li>
+										<a href="http://devcenter.godo.co.kr/" target="_blank">
+											개발자센터																					</a>
+									</li>
+															</ul>
+							<dl>
+								<dt></dt>
+								<dd>
+									<a href="javascript:void(0);" target="">
+										
+									</a>
+								</dd>
+							</dl>
+						</div>
+													<a href="http://www.godo.co.kr/echost/tech/solution-upgrade-intro.gd" target="">
+								<img src="//img.godo.co.kr/godomall/header/sub/ban_shop_tech.png" alt="쇼핑몰 이전">
+							</a>
+											</div>
+					<div class="menu_shadow"></div>
+				</div>
+																				<div class="sub_dep03 hosting_serverhosting">
+					<div class="dep03_box">
+						<div class="dep03_title"><img src="//img.godo.co.kr/godomall/header/sub/h_hosting_server.png" alt="서버 호스팅"></div>
+						<div class="dep03_menu">
+							<ul>
+																	<li>
+										<a href="http://hosting.godo.co.kr/serverhosting/serverhosting_sub_main.php" target="">
+											서버 호스팅																					</a>
+									</li>
+																	<li>
+										<a href="http://hosting.godo.co.kr/serverhosting/colocation_product.php" target="">
+											코로케이션																					</a>
+									</li>
+																	<li>
+										<a href="http://hosting.godo.co.kr/serverhosting/management_intro.php" target="">
+											관리대행 서비스																					</a>
+									</li>
+																	<li>
+										<a href="http://hosting.godo.co.kr/serverhosting/idc_info.php" target="">
+											IDC 소개																					</a>
+									</li>
+																	<li>
+										<a href="http://hosting.godo.co.kr/serverhosting/landing_security.php" target="">
+											보안서비스																					</a>
+									</li>
+																	<li>
+										<a href="http://hosting.godo.co.kr/serverhosting/webservice_counsel.php" target="">
+											웹서비스 구축																					</a>
+									</li>
+															</ul>
+							<dl>
+								<dt><img src="//img.godo.co.kr/godomall/header/sub/ico_rec.png" alt="추천상품"></dt>
+								<dd>
+									<a href="http://hosting.godo.co.kr/valueadd/firewall_service.php" target="">
+										웹방화벽 신청 시 관리대행 무료제공 (이벤트 진행중)
+									</a>
+								</dd>
+							</dl>
+						</div>
+													<a href="http://hosting.godo.co.kr/serverhosting/serverhosting_detail.php?no=210&type=SR" target="">
+								<img src="//img.godo.co.kr/godomall/header/sub/ban_hosting_server.png" alt="서버호스팅 구매">
+							</a>
+											</div>
+					<div class="menu_shadow"></div>
+				</div>
+												<div class="sub_dep03 hosting_webhosting">
+					<div class="dep03_box">
+						<div class="dep03_title"><img src="//img.godo.co.kr/godomall/header/sub/h_hosting_web.png" alt="웹 호스팅"></div>
+						<div class="dep03_menu">
+							<ul>
+																	<li>
+										<a href="http://hosting.godo.co.kr/imghosting/imghosting_info.php" target="">
+											이미지 호스팅																					</a>
+									</li>
+																	<li>
+										<a href="http://hosting.godo.co.kr/webhosting/webhosting_service_info.php" target="">
+											리눅스 웹 호스팅																					</a>
+									</li>
+																	<li>
+										<a href="http://hosting.godo.co.kr/winhosting/winhosting_service_info.php" target="">
+											윈도우 웹 호스팅																					</a>
+									</li>
+																	<li>
+										<a href="http://hosting.godo.co.kr/iwebhosting/info.php" target="">
+											독립 웹 호스팅																					</a>
+									</li>
+																	<li>
+										<a href="http://hosting.godo.co.kr/streaminghosting/streaminghosting_info.php" target="">
+											동영상 호스팅																					</a>
+									</li>
+																	<li>
+										<a href="http://hosting.godo.co.kr/dbhosting/dbhosting_info.php" target="">
+											DB 호스팅																					</a>
+									</li>
+																	<li>
+										<a href="http://hosting.godo.co.kr/smshosting/smshosting_info.php" target="">
+											SMS 호스팅																					</a>
+									</li>
+																	<li>
+										<a href="http://hosting.godo.co.kr/shophosting/shophosting_info.php" target="">
+											쇼핑몰 호스팅																					</a>
+									</li>
+															</ul>
+							<dl>
+								<dt><img src="//img.godo.co.kr/godomall/header/sub/ico_rec.png" alt="추천상품"></dt>
+								<dd>
+									<a href="http://hosting.godo.co.kr/valueadd/ssl_service.php" target="">
+										SSL보안서버는 법적 의무! 위반 시 최대 3천만원의 과태료 부과
+									</a>
+								</dd>
+							</dl>
+						</div>
+													<a href="http://hosting.godo.co.kr/imghosting/imghosting_info.php" target="">
+								<img src="//img.godo.co.kr/godomall/header/sub/ban_hosting_web.png" alt="이미지호스팅">
+							</a>
+											</div>
+					<div class="menu_shadow"></div>
+				</div>
+												<div class="sub_dep03 hosting_secure">
+					<div class="dep03_box">
+						<div class="dep03_title"><img src="//img.godo.co.kr/godomall/header/sub/h_hosting_sec.png" alt="보안서비스"></div>
+						<div class="dep03_menu">
+							<ul>
+																	<li>
+										<a href="http://hosting.godo.co.kr/valueadd/enterprise_securityManagement.php" target="">
+											통합보안 관제 서비스																					</a>
+									</li>
+																	<li>
+										<a href="http://hosting.godo.co.kr/valueadd/ssl_service.php" target="">
+											SSL 보안서버																					</a>
+									</li>
+																	<li>
+										<a href="http://hosting.godo.co.kr/valueadd/firewall_service.php" target="">
+											웹 방화벽																					</a>
+									</li>
+																	<li>
+										<a href="http://hosting.godo.co.kr/valueadd/ips_info.php" target="">
+											IPS(침입방지시스템)																					</a>
+									</li>
+																	<li>
+										<a href="http://hosting.godo.co.kr/valueadd/security_service.php" target="">
+											방화벽 서비스																					</a>
+									</li>
+																	<li>
+										<a href="http://hosting.godo.co.kr/valueadd/utm_info.php" target="">
+											UTM(통합보안서비스)																					</a>
+									</li>
+																	<li>
+										<a href="http://hosting.godo.co.kr/valueadd/ddos_info.php" target="">
+											DDOS 보안존																					</a>
+									</li>
+																	<li>
+										<a href="http://hosting.godo.co.kr/valueadd/consulting_security.php" target="">
+											보안컨설팅																					</a>
+									</li>
+																	<li>
+										<a href="http://hosting.godo.co.kr/valueadd/office_security.php" target="">
+											오피스 방화벽																					</a>
+									</li>
+															</ul>
+							<dl>
+								<dt><img src="//img.godo.co.kr/godomall/header/sub/ico_rec.png" alt="추천상품"></dt>
+								<dd>
+									<a href="http://hosting.godo.co.kr/valueadd/firewall_service.php" target="">
+										웹방화벽 신청 시 관리대행 무료제공 (이벤트 진행중)
+									</a>
+								</dd>
+							</dl>
+						</div>
+													<a href="http://hosting.godo.co.kr/valueadd/ssl_service.php" target="">
+								<img src="//img.godo.co.kr/godomall/header/sub/ban_hosting_sec.png" alt="SSL 보안서버">
+							</a>
+											</div>
+					<div class="menu_shadow"></div>
+				</div>
+												<div class="sub_dep03 hosting_addservice">
+					<div class="dep03_box">
+						<div class="dep03_title"><img src="//img.godo.co.kr/godomall/header/sub/h_hosting_add.png" alt="부가서비스"></div>
+						<div class="dep03_menu">
+							<ul>
+																	<li>
+										<a href="http://hosting.godo.co.kr/valueadd/loadbalancing_service_intro.php" target="">
+											로드밸런싱																					</a>
+									</li>
+																	<li>
+										<a href="http://hosting.godo.co.kr/valueadd/tech_support_windows.php" target="">
+											기술지원서비스																					</a>
+									</li>
+																	<li>
+										<a href="http://hosting.godo.co.kr/software/software_info.php" target="">
+											소프트웨어 라이선스																					</a>
+									</li>
+																	<li>
+										<a href="http://hosting.godo.co.kr/valueadd/signra.php" target="">
+											공인인증서																					</a>
+									</li>
+																	<li>
+										<a href="http://hosting.godo.co.kr/webhosting_transreq/webhosting_transreq_intro.php" target="">
+											웹 호스팅 타사이전 신청																					</a>
+									</li>
+																	<li>
+										<a href="http://hosting.godo.co.kr/valueadd/homez_service.php" target="">
+											고도홈즈&홈페이지 제작																					</a>
+									</li>
+															</ul>
+							<dl>
+								<dt><img src="//img.godo.co.kr/godomall/header/sub/ico_rec.png" alt="추천상품"></dt>
+								<dd>
+									<a href="http://hosting.godo.co.kr/serverhosting/management_intro.php" target="">
+										24시간 관제 모니터링 서비스 - 관리대행 월 50,000원
+									</a>
+								</dd>
+							</dl>
+						</div>
+													<a href="http://hosting.godo.co.kr/valueadd/loadbalancing_service_intro.php" target="">
+								<img src="//img.godo.co.kr/godomall/header/sub/ban_hosting_add.png" alt="로드밸런싱">
+							</a>
+											</div>
+					<div class="menu_shadow"></div>
+				</div>
+																									<div class="sub_dep03 domain_regist">
+					<div class="dep03_box">
+						<div class="dep03_title"><img src="//img.godo.co.kr/godomall/header/sub/h_domain_domain.png" alt="도메인등록"></div>
+						<div class="dep03_menu">
+							<ul>
+																	<li>
+										<a href="http://domain.godo.co.kr/regist/domain_search_2014.php" target="">
+											도메인 검색/등록																					</a>
+									</li>
+																	<li>
+										<a href="http://domain.godo.co.kr/info/domain_info_01_1.php" target="">
+											도메인 종류/비용																					</a>
+									</li>
+															</ul>
+							<dl>
+								<dt><img src="//img.godo.co.kr/godomall/header/sub/ico_rec.png" alt="추천상품"></dt>
+								<dd>
+									<a href="http://domain.godo.co.kr/info/domain_info_04_2.php" target="">
+										여러 개의 도메인을 한 사이트로 쉽게 연결하는 포워딩 서비스
+									</a>
+								</dd>
+							</dl>
+						</div>
+													<a href="http://domain.godo.co.kr/event/20140327_event1.php" target="">
+								<img src="//img.godo.co.kr/godomall/header/sub/ban_domain_domain.png" alt="이벤트">
+							</a>
+											</div>
+					<div class="menu_shadow"></div>
+				</div>
+												<div class="sub_dep03 domain_mygodo">
+					<div class="dep03_box">
+						<div class="dep03_title"><img src="//img.godo.co.kr/godomall/header/sub/h_domain_admin.png" alt="도메인관리"></div>
+						<div class="dep03_menu">
+							<ul>
+																	<li>
+										<a href="http://domain.godo.co.kr/info/domain_info_05_1.php" target="">
+											로그인 없이 연장																					</a>
+									</li>
+																	<li>
+										<a href="http://domain.godo.co.kr/mygodo/mygodo_domain_list_000.php" target="_blank">
+											도메인 연장																					</a>
+									</li>
+																	<li>
+										<a href="http://domain.godo.co.kr/mygodo/mygodo_domain_list_02.php" target="_blank">
+											도메인 정보변경																					</a>
+									</li>
+																	<li>
+										<a href="http://domain.godo.co.kr/mygodo/mygodo_domain_list_01.php" target="_blank">
+											네임서버 변경																					</a>
+									</li>
+																	<li>
+										<a href="http://domain.godo.co.kr/mygodo/mygodo_domain_list_07.php" target="_blank">
+											제휴업체 변경																					</a>
+									</li>
+															</ul>
+							<dl>
+								<dt><img src="//img.godo.co.kr/godomall/header/sub/ico_rec.png" alt="추천상품"></dt>
+								<dd>
+									<a href="http://domain.godo.co.kr/info/domain_info_04_1.php" target="">
+										사이트를 잠시 닫아둘 때? 파킹서비스의 임시 페이지를 이용해보자!
+									</a>
+								</dd>
+							</dl>
+						</div>
+													<a href="http://domain.godo.co.kr/event/20140327_event1.php" target="">
+								<img src="//img.godo.co.kr/godomall/header/sub/ban_domain_admin.png" alt="이벤트">
+							</a>
+											</div>
+					<div class="menu_shadow"></div>
+				</div>
+												<div class="sub_dep03 domain_move">
+					<div class="dep03_box">
+						<div class="dep03_title"><img src="//img.godo.co.kr/godomall/header/sub/h_domain_relocate.png" alt="기관이전"></div>
+						<div class="dep03_menu">
+							<ul>
+																	<li>
+										<a href="http://domain.godo.co.kr/info/domain_info_03_1.php" target="">
+											고도로 이전																					</a>
+									</li>
+																	<li>
+										<a href="http://domain.godo.co.kr/mygodo/mygodo_domain_list.php" target="_blank">
+											기관이전 현황																					</a>
+									</li>
+																	<li>
+										<a href="http://domain.godo.co.kr/mygodo/mygodo_domain_list_04.php" target="_blank">
+											소유권 이전																					</a>
+									</li>
+															</ul>
+							<dl>
+								<dt><img src="//img.godo.co.kr/godomall/header/sub/ico_rec.png" alt="추천상품"></dt>
+								<dd>
+									<a href="http://domain.godo.co.kr/info/domain_info_04_3.php" target="">
+										블로그 임시도메인을 내가 보유한 정식 도메인으로 연결하고 싶다면?
+									</a>
+								</dd>
+							</dl>
+						</div>
+													<a href="http://domain.godo.co.kr/info/domain_info_03_1.php" target="">
+								<img src="//img.godo.co.kr/godomall/header/sub/ban_domain_relocate.png" alt="기관이전">
+							</a>
+											</div>
+					<div class="menu_shadow"></div>
+				</div>
+												<div class="sub_dep03 domain_addservice">
+					<div class="dep03_box">
+						<div class="dep03_title"><img src="//img.godo.co.kr/godomall/header/sub/h_domain_add.png" alt="부가서비스"></div>
+						<div class="dep03_menu">
+							<ul>
+																	<li>
+										<a href="http://domain.godo.co.kr/info/domain_info_04_2.php" target="">
+											포워딩 서비스																					</a>
+									</li>
+																	<li>
+										<a href="http://domain.godo.co.kr/info/domain_info_04_1.php" target="">
+											파킹 서비스																					</a>
+									</li>
+																	<li>
+										<a href="http://domain.godo.co.kr/info/domain_info_04_3.php" target="">
+											서비스 자동연결																					</a>
+									</li>
+																	<li>
+										<a href="http://domain.godo.co.kr/info/domain_info_04_4.php" target="">
+											MX값 자동설정																					</a>
+									</li>
+															</ul>
+							<dl>
+								<dt><img src="//img.godo.co.kr/godomall/header/sub/ico_rec.png" alt="추천상품"></dt>
+								<dd>
+									<a href="http://domain.godo.co.kr/info/domain_info_03_1.php" target="">
+										지금 기관이전 신청 시 도메인 6,000원 할인!
+									</a>
+								</dd>
+							</dl>
+						</div>
+													<a href="http://domain.godo.co.kr/info/domain_info_03_1.php" target="">
+								<img src="//img.godo.co.kr/godomall/header/sub/ban_domain_add.png" alt="기관이전">
+							</a>
+											</div>
+					<div class="menu_shadow"></div>
+				</div>
+															<div class="sub_dep03 design_shopskin">
+					<div class="dep03_box">
+						<div class="dep03_title"><img src="//img.godo.co.kr/godomall/header/sub/h_design_shop.png" alt="쇼핑몰스킨"></div>
+						<div class="dep03_menu">
+							<ul>
+																	<li>
+										<a href="http://design.godo.co.kr/goods/goods-list.php" target="">
+											전체																					</a>
+									</li>
+																	<li>
+										<a href="http://design.godo.co.kr/goods/goods-list.php?type=pcskin" target="">
+											PC스킨																					</a>
+									</li>
+																	<li>
+										<a href="http://design.godo.co.kr/goods/goods-list.php?type=mobileskin" target="">
+											모바일스킨																					</a>
+									</li>
+																	<li>
+										<a href="http://design.godo.co.kr/goods/goods-list.php?type=both" target="">
+											PC+모바일 세트																					</a>
+									</li>
+																	<li>
+										<a href="http://design.godo.co.kr/goods/freeskin-list.php" target="">
+											무료디자인스킨																					</a>
+									</li>
+															</ul>
+							<dl>
+								<dt><img src="//img.godo.co.kr/godomall/header/sub/ico_rec.png" alt="추천상품"></dt>
+								<dd>
+									<a href="http://design.godo.co.kr/goods/goods-list.php?type=design" target="">
+										쇼핑몰 운영 중 디자인이 필요하다면? 손쉽게 부분디자인에서 해결하세요!
+									</a>
+								</dd>
+							</dl>
+						</div>
+													<a href="http://design.godo.co.kr/ranking/promotion-list.php?dsPrnNo=78&type=pro" target="">
+								<img src="//img.godo.co.kr/godomall/header/sub/ban_design_shop_skin.jpg" alt="추석 부분디자인">
+							</a>
+											</div>
+					<div class="menu_shadow"></div>
+				</div>
+												<div class="sub_dep03 design_goods">
+					<div class="dep03_box">
+						<div class="dep03_title"><img src="//img.godo.co.kr/godomall/header/sub/h_design_part.png" alt="부분디자인"></div>
+						<div class="dep03_menu">
+							<ul>
+																	<li>
+										<a href="http://design.godo.co.kr/goods/goods-list.php?type=design" target="">
+											전체																					</a>
+									</li>
+																	<li>
+										<a href="http://design.godo.co.kr/goods/goods-list.php?dsGoodsCateNo=201000000&type=design" target="">
+											팝업이미지																					</a>
+									</li>
+																	<li>
+										<a href="http://design.godo.co.kr/goods/goods-list.php?dsGoodsCateNo=205000000&type=design" target="">
+											상품상세이미지																					</a>
+									</li>
+																	<li>
+										<a href="http://design.godo.co.kr/goods/goods-list.php?dsGoodsCateNo=208000000&type=design" target="">
+											상품/모델사이즈표																					</a>
+									</li>
+																	<li>
+										<a href="http://design.godo.co.kr/goods/goods-list.php?dsGoodsCateNo=204000000&type=design" target="">
+											배너이미지																					</a>
+									</li>
+																	<li>
+										<a href="http://design.godo.co.kr/goods/goods-list.php?dsGoodsCateNo=207000000&type=design" target="">
+											아이콘																					</a>
+									</li>
+																	<li>
+										<a href="http://design.godo.co.kr/goods/goods-list.php?dsGoodsCateNo=214000000&type=design" target="">
+											기타																					</a>
+									</li>
+																	<li>
+										<a href="http://design.godo.co.kr/custom/free-font.php" target="">
+											무료폰트																					</a>
+									</li>
+															</ul>
+							<dl>
+								<dt><img src="//img.godo.co.kr/godomall/header/sub/ico_rec.png" alt="추천상품"></dt>
+								<dd>
+									<a href="http://design.godo.co.kr/goods/goods-list.php?type=pcskin" target="">
+										쇼핑몰 스킨만 바꿔도 달라 보이는 상품, 달라지는 매출!
+									</a>
+								</dd>
+							</dl>
+						</div>
+													<a href="http://design.godo.co.kr/custom/free-font.php" target="">
+								<img src="//img.godo.co.kr/godomall/header/sub/ban_design_part_font.png" alt="무료폰트">
+							</a>
+											</div>
+					<div class="menu_shadow"></div>
+				</div>
+												<div class="sub_dep03 design_custom">
+					<div class="dep03_box">
+						<div class="dep03_title"><img src="//img.godo.co.kr/godomall/header/sub/h_design_custom.png" alt="맞춤디자인"></div>
+						<div class="dep03_menu">
+							<ul>
+																	<li>
+										<a href="http://design.godo.co.kr/custom/custom-list.php" target="">
+											전체																					</a>
+									</li>
+																	<li>
+										<a href="http://design.godo.co.kr/custom/custom-list.php?dsGoodsCateNo=301000000" target="">
+											맞춤디자인																					</a>
+									</li>
+																	<li>
+										<a href="http://design.godo.co.kr/custom/custom-list.php?dsGoodsCateNo=302000000" target="">
+											반맞춤디자인																					</a>
+									</li>
+																	<li>
+										<a href="http://design.godo.co.kr/custom/custom-list.php?dsGoodsCateNo=303000000" target="">
+											페이지맞춤																					</a>
+									</li>
+																	<li>
+										<a href="http://design.godo.co.kr/custom/custom-list.php?dsGoodsCateNo=304000000" target="">
+											코딩서비스																					</a>
+									</li>
+															</ul>
+							<dl>
+								<dt><img src="//img.godo.co.kr/godomall/header/sub/ico_rec.png" alt="추천상품"></dt>
+								<dd>
+									<a href="http://design.godo.co.kr/ranking/main-list.php?type=bestSeller" target="">
+										지금 가장 인기있는 쇼핑몰스킨 랭킹 TOP20을 만나보세요.
+									</a>
+								</dd>
+							</dl>
+						</div>
+													<a href="http://design.godo.co.kr/custom/custom-list.php" target="">
+								<img src="//img.godo.co.kr/godomall/header/sub/ban_design_custom.png" alt="맞춤디자인">
+							</a>
+											</div>
+					<div class="menu_shadow"></div>
+				</div>
+																	<div class="sub_dep03 design_promotion">
+					<div class="dep03_box">
+						<div class="dep03_title"><img src="//img.godo.co.kr/godomall/header/sub/h_design_top20.jpg" alt="TOP20"></div>
+						<div class="dep03_menu">
+							<ul>
+																	<li>
+										<a href="http://design.godo.co.kr/ranking/main-list.php?type=bestSeller" target="">
+											베스트인기																					</a>
+									</li>
+																	<li>
+										<a href="http://design.godo.co.kr/ranking/main-list.php?type=hotClick" target="">
+											핫클릭																					</a>
+									</li>
+																	<li>
+										<a href="http://design.godo.co.kr/ranking/promotion-list.php" target="">
+											우수디자인																					</a>
+									</li>
+															</ul>
+							<dl>
+								<dt><img src="//img.godo.co.kr/godomall/header/sub/ico_rec.png" alt="추천상품"></dt>
+								<dd>
+									<a href="http://design.godo.co.kr/custom/custom-list.php" target="">
+										특별한 쇼핑몰을 위한 나만의 맞춤디자인을 완성해보세요.
+									</a>
+								</dd>
+							</dl>
+						</div>
+													<a href="http://design.godo.co.kr/ranking/main-list.php?type=bestSeller" target="">
+								<img src="//img.godo.co.kr/godomall/header/sub/GNBbanner200x195.jpg" alt="TOP20">
+							</a>
+											</div>
+					<div class="menu_shadow"></div>
+				</div>
+															<div class="sub_dep03 marketing_agency">
+					<div class="dep03_box">
+						<div class="dep03_title"><img src="//img.godo.co.kr/godomall/header/sub/h_marketing_stand.png" alt="입점광고"></div>
+						<div class="dep03_menu">
+							<ul>
+																	<li>
+										<a href="http://marketing.godo.co.kr/naver_pass.php" target="">
+											입점대행 서비스																					</a>
+									</li>
+																	<li>
+										<a href="http://marketing.godo.co.kr/naver_kin_reg.php" target="">
+											네이버 쇼핑																					</a>
+									</li>
+																	<li>
+										<a href="http://marketing.godo.co.kr/naver_pay.php" target="">
+											네이버 페이																					</a>
+									</li>
+																	<li>
+										<a href="http://www.godo.co.kr/echost/power/add/payment/payco-intro.gd" target="_blank">
+											페이코																					</a>
+									</li>
+																	<li>
+										<a href="http://marketing.godo.co.kr/daum_shoppinghow_reg.php" target="">
+											다음 쇼핑하우																					</a>
+									</li>
+															</ul>
+							<dl>
+								<dt></dt>
+								<dd>
+									<a href="javascript:void(0);" target="">
+										
+									</a>
+								</dd>
+							</dl>
+						</div>
+													<a href="http://marketing.godo.co.kr/naver_pass.php" target="">
+								<img src="//img.godo.co.kr/godomall/header/sub/ban_marketing_stand.png" alt="입점대행서비스">
+							</a>
+											</div>
+					<div class="menu_shadow"></div>
+				</div>
+												<div class="sub_dep03 marketing_search">
+					<div class="dep03_box">
+						<div class="dep03_title"><img src="//img.godo.co.kr/godomall/header/sub/h_marketing_search.png" alt="검색광고"></div>
+						<div class="dep03_menu">
+							<ul>
+																	<li>
+										<a href="http://marketing.godo.co.kr/keyword_integrate.php" target="">
+											통합 키워드광고																					</a>
+									</li>
+																	<li>
+										<a href="http://marketing.godo.co.kr/brand_search.php" target="">
+											브랜드 검색																					</a>
+									</li>
+																	<li>
+										<a href="http://marketing.godo.co.kr/neoclick.php" target="">
+											네오클릭																					</a>
+									</li>
+																	<li>
+										<a href="http://marketing.godo.co.kr/naver_shopping.php" target="">
+											네이버쇼핑 검색광고																					</a>
+									</li>
+															</ul>
+							<dl>
+								<dt></dt>
+								<dd>
+									<a href="javascript:void(0);" target="">
+										
+									</a>
+								</dd>
+							</dl>
+						</div>
+													<a href="http://marketing.godo.co.kr/keyword_integrate.php" target="">
+								<img src="//img.godo.co.kr/godomall/header/sub/ban_marketing_search.png" alt="통합키워드광고">
+							</a>
+											</div>
+					<div class="menu_shadow"></div>
+				</div>
+												<div class="sub_dep03 marketing_shopping">
+					<div class="dep03_box">
+						<div class="dep03_title"><img src="//img.godo.co.kr/godomall/header/sub/h_marketing_shop.png" alt="쇼핑광고"></div>
+						<div class="dep03_menu">
+							<ul>
+																	<li>
+										<a href="http://marketing.godo.co.kr/naver_trend.php" target="">
+											네이버 쇼핑박스																					</a>
+									</li>
+																	<li>
+										<a href="http://marketing.godo.co.kr/daum_tab1_reg.php" target="">
+											다음 쇼핑박스																					</a>
+									</li>
+																	<li>
+										<a href="http://marketing.godo.co.kr/daum_mobile_reg.php" target="">
+											다음 모바일 쇼핑박스																					</a>
+									</li>
+																	<li>
+										<a href="http://marketing.godo.co.kr/nate_tab1.php" target="">
+											NATE 쇼핑박스																					</a>
+									</li>
+																	<li>
+										<a href="http://marketing.godo.co.kr/zum_box.php" target="">
+											ZUM 쇼핑박스																					</a>
+									</li>
+															</ul>
+							<dl>
+								<dt></dt>
+								<dd>
+									<a href="javascript:void(0);" target="">
+										
+									</a>
+								</dd>
+							</dl>
+						</div>
+													<a href="http://marketing.godo.co.kr/naver_trend.php" target="">
+								<img src="//img.godo.co.kr/godomall/header/sub/ban_marketing_shop.png" alt="네이버트랜드">
+							</a>
+											</div>
+					<div class="menu_shadow"></div>
+				</div>
+												<div class="sub_dep03 marketing_banner">
+					<div class="dep03_box">
+						<div class="dep03_title"><img src="//img.godo.co.kr/godomall/header/sub/h_marketing_ban.png" alt="배너/리타겟팅광고"></div>
+						<div class="dep03_menu">
+							<ul>
+																	<li>
+										<a href="http://marketing.godo.co.kr/portalB.php" target="">
+											포털 배너광고																					</a>
+									</li>
+																	<li>
+										<a href="http://marketing.godo.co.kr/criteo.php" target="">
+											리타겟팅광고																					</a>
+									</li>
+															</ul>
+							<dl>
+								<dt></dt>
+								<dd>
+									<a href="javascript:void(0);" target="">
+										
+									</a>
+								</dd>
+							</dl>
+						</div>
+													<a href="http://marketing.godo.co.kr/criteo.php" target="">
+								<img src="//img.godo.co.kr/godomall/header/sub/ban_marketing_ban.png" alt="리타게팅">
+							</a>
+											</div>
+					<div class="menu_shadow"></div>
+				</div>
+												<div class="sub_dep03 marketing_mobile">
+					<div class="dep03_box">
+						<div class="dep03_title"><img src="//img.godo.co.kr/godomall/header/sub/h_marketing_mobile.png" alt="모바일/SNS/바이럴"></div>
+						<div class="dep03_menu">
+							<ul>
+																	<li>
+										<a href="http://marketing.godo.co.kr/viral.php" target="">
+											바이럴 마케팅																					</a>
+									</li>
+																	<li>
+										<a href="http://marketing.godo.co.kr/fas.php" target="">
+											페이스북																					</a>
+									</li>
+																	<li>
+										<a href="http://marketing.godo.co.kr/video_ad.php" target="">
+											동영상컨텐츠 광고																					</a>
+									</li>
+															</ul>
+							<dl>
+								<dt></dt>
+								<dd>
+									<a href="javascript:void(0);" target="">
+										
+									</a>
+								</dd>
+							</dl>
+						</div>
+													<a href="http://marketing.godo.co.kr/fas.php" target="">
+								<img src="//img.godo.co.kr/godomall/header/sub/ban_marketing_mobile.png" alt="페이스북">
+							</a>
+											</div>
+					<div class="menu_shadow"></div>
+				</div>
+																				<div class="sub_dep03 edu_intro">
+					<div class="dep03_box">
+						<div class="dep03_title"><img src="//img.godo.co.kr/godomall/header/sub/h_academy_intro.png" alt="아카데미 소개"></div>
+						<div class="dep03_menu">
+							<ul>
+																	<li>
+										<a href="http://edu.godo.co.kr/intro/history.php" target="">
+											아카데미 연혁																					</a>
+									</li>
+																	<li>
+										<a href="http://edu.godo.co.kr/intro/place.php" target="">
+											기관 소개																					</a>
+									</li>
+																	<li>
+										<a href="http://edu.godo.co.kr/intro/lecturer.php" target="">
+											강사 소개																					</a>
+									</li>
+																	<li>
+										<a href="http://edu.godo.co.kr/intro/news-list.php" target="">
+											아카데미 소식																					</a>
+									</li>
+																	<li>
+										<a href="http://edu.godo.co.kr/intro/partner.php" target="">
+											교육파트너																					</a>
+									</li>
+															</ul>
+							<dl>
+								<dt></dt>
+								<dd>
+									<a href="javascript:void(0);" target="">
+										
+									</a>
+								</dd>
+							</dl>
+						</div>
+													<a href="http://edu.godo.co.kr/lecture/list.php?mode=calendar#aCal" target="">
+								<img src="//img.godo.co.kr/godomall/header/sub/ban_academy_intro.png" alt="이달의 교육">
+							</a>
+											</div>
+					<div class="menu_shadow"></div>
+				</div>
+												<div class="sub_dep03 edu_study">
+					<div class="dep03_box">
+						<div class="dep03_title"><img src="//img.godo.co.kr/godomall/header/sub/h_academy_guide.png" alt="아카데미 활용가이드"></div>
+						<div class="dep03_menu">
+							<ul>
+																	<li>
+										<a href="http://edu.godo.co.kr/study/enamoo-video-list.php" target="">
+											쇼핑몰 활용가이드																					</a>
+									</li>
+																	<li>
+										<a href="http://edu.godo.co.kr/student/review-list.php" target="">
+											수강후기																					</a>
+									</li>
+																	<li>
+										<a href="http://edu.godo.co.kr/student/openbiz-list.php" target="">
+											수료생 창업 현황																					</a>
+									</li>
+																	<li>
+										<a href="http://edu.godo.co.kr/student/recruit-list.php" target="">
+											쇼핑몰 구인 구직																					</a>
+									</li>
+															</ul>
+							<dl>
+								<dt></dt>
+								<dd>
+									<a href="javascript:void(0);" target="">
+										
+									</a>
+								</dd>
+							</dl>
+						</div>
+													<a href="http://edu.godo.co.kr/lecture/list.php?mode=calendar#aCal" target="">
+								<img src="//img.godo.co.kr/godomall/header/sub/ban_academy_guide.png" alt="이달의 교육">
+							</a>
+											</div>
+					<div class="menu_shadow"></div>
+				</div>
+												<div class="sub_dep03 edu_license">
+					<div class="dep03_box">
+						<div class="dep03_title"><img src="//img.godo.co.kr/godomall/header/sub/h_academy_li.png" alt="쇼핑몰 자격증"></div>
+						<div class="dep03_menu">
+							<ul>
+																	<li>
+										<a href="http://edu.godo.co.kr/license/license-intro.php" target="">
+											자격증 소개																					</a>
+									</li>
+																	<li>
+										<a href="http://edu.godo.co.kr/license/license-list.php" target="">
+											시험일정/원서접수																					</a>
+									</li>
+																	<li>
+										<a href="http://www.godo.co.kr/mygodo/my_godo_license.html" target="_blank">
+											신청/합격조회																					</a>
+									</li>
+																	<li>
+										<a href="http://edu.godo.co.kr/license/license-notice-list.php" target="">
+											공지사항																					</a>
+									</li>
+															</ul>
+							<dl>
+								<dt></dt>
+								<dd>
+									<a href="javascript:void(0);" target="">
+										
+									</a>
+								</dd>
+							</dl>
+						</div>
+													<a href="http://edu.godo.co.kr/lecture/list.php?mode=calendar#aCal" target="">
+								<img src="//img.godo.co.kr/godomall/header/sub/ban_academy_li.png" alt="이달의 교육">
+							</a>
+											</div>
+					<div class="menu_shadow"></div>
+				</div>
+																																																																																																							<!-- //dep02 오버시 나오는 메뉴-->
+
+</div>
+<!-- //서브 -->
+
+<!-- 전체서비스 -->
+<div id="allService" class="resetOld">
+	<div  class="all-service">
+		<div class="layer-wrap">
+			<h2>고도 서비스 전체보기</h2>
+			<div class="cnt-wrap">
+				<div class="left">
+					<ul>
+						<li><a href="#asCnt1" class="tab1">전체 메뉴 보기</a></li>
+						<li><a href="#asCnt2" class="tab2">쇼핑몰 창업을 <br />준비하세요?</a></li>
+						<li><a href="#asCnt3" class="tab3">쇼핑몰 제작이 <br />궁금하세요?</a></li>
+						<li><a href="#asCnt4" class="tab4">방문자를 <br />늘리고 싶으세요?</a></li>
+						<li><a href="#asCnt5" class="tab5">효율적인 운영을 <br />원하세요?</a></li>
+						<li><a href="#asCnt6" class="tab6">해외 아이템도 <br />판매하고 싶으세요?</a></li>
+						<li><a href="#asCnt7" class="tab7">타사 서비스를 <br />이용중이세요?</a></li>
+					</ul>
+					<div>
+						<img src="//img.godo.co.kr/godomall/header/allservice/cs_pn.gif" alt="1688-7662" />
+						<a href="http://www.godo.co.kr/customer/faq-list.gd" class="fir">FAQ</a>
+						<a href="javascript:;" class="btn-business-consult-gnb">창업상담</a>
+						<a href="https://www.godo.co.kr/mygodo/helper.html">1:1문의</a>
+					</div>
+				</div>
+				<div class="right">
+					<div id="asCnt1">
+						<ul>
+															<li>
+									<a href="http://www.godo.co.kr/echost/solution/main.gd">쇼핑몰</a>
+									<ul>
+																																	<li>
+													-
+													<a href="http://www.godo.co.kr/echost/solution/godomall-standard-intro.gd" target="">쇼핑몰 솔루션</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://www.godo.co.kr/echost/power/add/payment/pg-intro.gd" target="">파워서비스</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://www.godo.co.kr/echost/mobile/mobile-shop-intro.gd" target="">모바일서비스</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://www.godo.co.kr/echost/global/overseas-pg-intro.gd" target="">글로벌서비스</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://www.godo.co.kr/echost/tech/solution-upgrade-intro.gd" target="">기술지원</a>
+												</li>
+																																												<li>
+													-
+													<a href="https://www.godo.co.kr/echost/tech/third-party-intro.gd" target="">고도로이전</a>
+												</li>
+																														</ul>
+								</li>
+															<li>
+									<a href="http://hosting.godo.co.kr/">호스팅</a>
+									<ul>
+																																	<li>
+													-
+													<a href="http://hosting.godo.co.kr/serverhosting/serverhosting_sub_main.php" target="">서버 호스팅</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://hosting.godo.co.kr/imghosting/imghosting_info.php" target="">웹 호스팅</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://hosting.godo.co.kr/valueadd/enterprise_securityManagement.php" target="">보안서비스</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://hosting.godo.co.kr/valueadd/loadbalancing_service_intro.php" target="">부가서비스</a>
+												</li>
+																																												<li>
+													-
+													<a href="https://cloudweb.godo.co.kr/" target="">클라우드</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://b2bweb.godo.co.kr/" target="">호스팅 파트너센터</a>
+												</li>
+																														</ul>
+								</li>
+															<li>
+									<a href="http://domain.godo.co.kr/">도메인</a>
+									<ul>
+																																	<li>
+													-
+													<a href="http://domain.godo.co.kr/regist/domain_search_2014.php" target="">도메인등록</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://domain.godo.co.kr/info/domain_info_05_1.php" target="">도메인관리</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://domain.godo.co.kr/info/domain_info_03_1.php" target="">기관이전</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://domain.godo.co.kr/info/domain_info_04_2.php" target="">부가서비스</a>
+												</li>
+																														</ul>
+								</li>
+															<li>
+									<a href="http://design.godo.co.kr/">디자인</a>
+									<ul>
+																																	<li>
+													-
+													<a href="http://design.godo.co.kr/goods/goods-list.php" target="">쇼핑몰스킨</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://design.godo.co.kr/goods/goods-list.php?type=design" target="">부분디자인</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://design.godo.co.kr/custom/custom-list.php" target="">맞춤디자인</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://design.godo.co.kr/brand/index.php" target="">브랜드샵</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://design.godo.co.kr/ranking/main-list.php?type=bestSeller" target="">TOP20</a>
+												</li>
+																														</ul>
+								</li>
+															<li>
+									<a href="http://marketing.godo.co.kr/">마케팅</a>
+									<ul>
+																																	<li>
+													-
+													<a href="http://marketing.godo.co.kr/naver_pass.php" target="">입점광고</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://marketing.godo.co.kr/keyword_integrate.php" target="">검색광고</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://marketing.godo.co.kr/naver_trend.php" target="">쇼핑광고</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://marketing.godo.co.kr/portalB.php" target="">배너/리타겟팅광고</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://marketing.godo.co.kr/viral.php" target="">모바일/SNS/바이럴</a>
+												</li>
+																														</ul>
+								</li>
+															<li>
+									<a href="http://edu.godo.co.kr/">아카데미</a>
+									<ul>
+																																	<li>
+													-
+													<a href="http://edu.godo.co.kr/lecture/list.php" target="">아카데미 교육</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://edu.godo.co.kr/intro/history.php" target="">아카데미 소개</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://edu.godo.co.kr/study/enamoo-video-list.php" target="">아카데미 활용가이드</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://edu.godo.co.kr/license/license-intro.php" target="">쇼핑몰 자격증</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://study.godo.co.kr/" target="_blank">동영상교육</a>
+												</li>
+																																																																								</ul>
+								</li>
+															<li>
+									<a href="http://www.godo.co.kr/mygodo/main.gd">마이고도</a>
+									<ul>
+																																	<li>
+													-
+													<a href="http://www.godo.co.kr/mygodo/myGodo_shopMain.php" target="">쇼핑몰관리</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://www.godo.co.kr/mygodo_webhosting/index.php" target="">호스팅관리</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://domain.godo.co.kr/mygodo/mygodo_domain_list.php" target="">도메인관리</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://www.godo.co.kr/mygodo/design/order-list.gd" target="">디자인센터</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://www.godo.co.kr/mygodo/my_godo_edu.html" target="">아카데미관리</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://www.godo.co.kr/mygodo/my_paylist.html" target="">회원/결제/쿠폰</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://www.godo.co.kr/mygodo/helper.html" target="">1:1문의/답변</a>
+												</li>
+																																																			</ul>
+								</li>
+															<li>
+									<a href="http://www.godo.co.kr/customer/main.gd">고객센터</a>
+									<ul>
+																																	<li>
+													-
+													<a href="http://www.godo.co.kr/customer/manual/list.gd" target="_blank">나를 위한 이용가이드</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://www.godo.co.kr/customer/faq-list.gd" target="">자주 묻는 질문</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://www.godo.co.kr/mygodo/helper_write.html" target="_blank">1:1문의</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://manual.godomall5.godomall.com/data/manual_view.php" target="_blank">매뉴얼</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://www.godo.co.kr/customer_center/patch.php" target="_blank">패치&업그레이드</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://www.godo.co.kr/customer/voice-list.gd" target="">고객의소리</a>
+												</li>
+																																												<li>
+													-
+													<a href="http://www.godo.co.kr/customer/board-list.gd?type=notice" target="">알립니다</a>
+												</li>
+																														</ul>
+								</li>
+														<li>
+								<strong>소식&amp;지원</strong>
+								<ul>
+									<li>
+										<a href="https://www.facebook.com/nhngodo" target="_blank">- 공식 페이스북</a>
+									</li>
+									<li>
+										<a href="http://blog.naver.com/godomallnews" target="_blank">- 공식 블로그</a>
+									</li>
+									<li>
+										<a href="https://www.instagram.com/nhngodo/" target="_blank">- 공식 인스타그램</a>
+									</li>
+									<li>
+										<a href="http://talk.godo.co.kr/" target="_blank">- 고도톡</a>
+									</li>
+									<li>
+										<a href="http://www.wizu.co.kr/" target="_blank">- 위쥬</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<strong>회사소개</strong>
+								<ul>
+									<li>
+										<a href="http://www.godo.co.kr/company/" target="_blank">- 회사소개</a>
+									</li>
+									<li>
+										<a href="http://www.godo.co.kr/company/contact_us.php" target="_blank">- 오시는 길</a>
+									</li>
+									<li>
+										<a href="http://www.godo.co.kr/company/shop.php" target="_blank">- 사업영역</a>
+									</li>
+									<li>
+										<a href="http://www.godo.co.kr/company/godo_staff.php" target="_blank">- 고도인</a>
+									</li>
+									<li>
+										<a href="http://www.godo.co.kr/company/social.php" target="_blank">- PR</a>
+									</li>
+									<li>
+										<a href="http://www.godo.co.kr/company/talent.php" target="_blank">- 채용안내</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<strong>파트너</strong>
+								<ul>
+									<li>
+										<a href="http://design.godo.co.kr/selleradmin" target="_blank">- 디자인 파트너</a>
+									</li>
+									<li>
+										<a href="http://program.godo.co.kr/shop/partner" target="_blank">- 맞춤개발 파트너</a>
+									</li>
+									<li>
+										<a href="http://b2bweb.godo.co.kr/">- 호스팅 파트너센터</a>
+									</li>
+									<li class="line">
+										<a href="http://www.godo.co.kr/company3/partner.html" onclick="window.open(this.href,'pop','width=821px,height=870px,scrollbars=yes');return false;">- 제휴문의</a>
+									</li>
+									<li>
+										<a href="http://devcenter.godo.co.kr/" target="_blank">- 개발자센터</a>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<strong>리셀러</strong>
+								<ul>
+									<li>
+										<a href="http://www.godo.co.kr/reseller/intro.php">- 리셀러 안내</a>
+									</li>
+									<li>
+										<a href="http://www.godo.co.kr/reseller/benefit_2.php">- 수익배분</a>
+									</li>
+									<li>
+										<a href="http://www.godo.co.kr/reseller/intro_3.php">- 리셀러 신청</a>
+									</li>
+									<li>
+										<a href="http://www.godo.co.kr/reseller/support.php">- 영업지원</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+					<div id="asCnt2">
+						<h3>쇼핑몰 창업준비 차근차근 꼼꼼하게!</h3>
+						<p>아이템 선정부터 온라인 비즈니스 시작까지! 창업가이드와 창업상담으로 지원해 드립니다!</p>
+						<ol>
+							<li>
+								<h4><img src="//img.godo.co.kr/godomall/header/allservice/num_s_1.png" alt="01" />창업 아이템 선정</h4>
+								<ul class="step1">
+									<li>
+										<strong>타겟 아이템</strong>
+										<span>주 판매 대상은 누구인가?</span>
+									</li>
+									<li>
+										<strong>경쟁사</strong>
+										<span>경쟁 쇼핑몰은 어디인가?</span>
+									</li>
+									<li>
+										<strong>차별성</strong>
+										<span>경쟁사 대비 내 쇼핑몰은?</span>
+									</li>
+									<li>
+										<strong>상품 공급</strong>
+										<span>지속적으로 가능한가?</span>
+									</li>
+								</ul>
+							</li>
+							<li class="right">
+								<h4><img src="//img.godo.co.kr/godomall/header/allservice/num_s_2.png" alt="02" />아이템 별 도매시장 정보</h4>
+								<ul class="step2">
+									<li>
+										<strong>의류 및 패션잡화</strong>
+										<span>동대문 도매시장, 남대문 시장</span>
+									</li>
+									<li>
+										<strong>문구 및 완구</strong>
+										<span>동대문 및 천호동 문구/완구 도매시장</span>
+									</li>
+									<li>
+										<strong>식품 및 식품재료</strong>
+										<span>중부시장, 청량리 땡 처리시장</span>
+									</li>
+									<li>
+										<strong>중국 도매시장</strong>
+										<span>이우 도매시장, 광저우 도매시장</span>
+									</li>
+								</ul>
+							</li>
+							<li>
+								<h4><img src="//img.godo.co.kr/godomall/header/allservice/num_s_3.png" alt="03" />쇼핑몰 사업 구체화 하기</h4>
+								<ul class="step3">
+									<li>
+										<strong>쇼핑몰 컨셉 및 방향</strong>
+										<span>내 쇼핑몰은 어떤 느낌인가?</span>
+									</li>
+									<li>
+										<strong>예산결정</strong>
+										<span>초기 비용이 들어가는 요소는?</span>
+									</li>
+									<li>
+										<strong>운영계획</strong>
+										<span>사입은 어디서? 촬영은 어디서?</span>
+									</li>
+									<li>
+										<strong>홍보계획</strong>
+										<span>광고는 어떻게 해야 할까?</span>
+									</li>
+								</ul>
+							</li>
+							<li class="right">
+								<h4><img src="//img.godo.co.kr/godomall/header/allservice/num_s_4.png" alt="04" />창업교육 받기</h4>
+								<ul class="step4">
+									<li>
+										<strong>창업준비과정</strong>
+										<span>창업 기초부터 사입 노하우까지</span>
+									</li>
+									<li>
+										<strong>쇼핑몰제작과정</strong>
+										<span>HTML, 디자인편집, 사진촬영</span>
+									</li>
+									<li>
+										<strong>쇼핑몰운영과정</strong>
+										<span>운영노하우, 세무교육, 로그분석</span>
+									</li>
+									<li>
+										<strong>마케팅교육과정</strong>
+										<span>마케팅 전략, 온라인 마케팅</span>
+									</li>
+								</ul>
+							</li>
+						</ol>
+						<div>
+							<h4><img src="//img.godo.co.kr/godomall/header/allservice/founded_tit.gif" alt="창업지원 서비스 안내 " /></h4>
+							<a href="http://static.godo.co.kr/download/startguide.pdf" target="_blank"><img src="//img.godo.co.kr/godomall/header/allservice/founded_btn_1.gif" alt="창업가이드 다운" /></a>
+							<a href="javascript:;" class="btn-business-consult-gnb"><img src="//img.godo.co.kr/godomall/header/allservice/founded_btn_2.gif" alt="빠른 창업 상담" /></a>
+							<a href="http://edu.godo.co.kr/" target="_blank"><img src="//img.godo.co.kr/godomall/header/allservice/founded_btn_3.gif" alt="고도 아카데미" /></a>
+							<a href="http://talk.godo.co.kr/list.php?cate=foundation&mode=foundation1&page=1" target="_blank"><img src="//img.godo.co.kr/godomall/header/allservice/founded_btn_4.gif" alt="창업톡" /></a>
+							<a href="http://www.wizu.co.kr/" target="_blank"><img src="//img.godo.co.kr/godomall/header/allservice/founded_btn_6.png" alt="wizu" /></a>
+						</div>
+					</div>
+					<div id="asCnt3">
+						<h3>쇼핑몰 제작에서 운영까지 한번에 해결하세요!</h3>
+						<ol>
+							<li class="fir">
+								<div class="tit">
+									<h4><img src="//img.godo.co.kr/godomall/header/allservice/num_s_1.png" alt="01" />쇼핑몰 제작?</h4>
+									<p>일단 신청만하면 만들기는 끝!</p>
+								</div>
+								<div class="build-cnt">
+									<p>고민 없이 운영하고 자동관리가 가능한</p>
+									<a href="http://www.godo.co.kr/echost/solution/godomall-standard-intro.gd">고도몰5 standard</a>
+									<p>자유로운 소스 수정이 가능한</p>
+									<a href="http://www.godo.co.kr/echost/solution/godomall-pro-intro.gd">고도몰5 pro</a>
+									<p>내 쇼핑몰에 꼭 필요한 기능 추가는</p>
+									<a href="http://plus.godo.co.kr/" target="_blank">플러스샵</a>
+									<br/>
+									<a href="http://www.godo.co.kr/echost/tuning/main.gd" target="_blank">튜닝센터</a>
+								</div>
+							</li>
+							<li>
+								<div class="tit">
+									<h4><img src="//img.godo.co.kr/godomall/header/allservice/num_s_2.png" alt="02" />좋은 도메인! 손님이 몰려온다!</h4>
+									<p>좋은 도메인 만들기 5계명</p>
+								</div>
+								<div class="build-cnt">
+									<ul>
+										<li>1. 되도록 짧은 도메인을 선택하라</li>
+										<li>2. 상품과 연관성이 높은 것이 좋다</li>
+										<li>3. 외우기 쉽고 연상되도록 하라</li>
+										<li>4. 숫자와 특수문자는 피하라</li>
+										<li>5. com, co.kr, net 등 유사 도메인은 <br />함께 구매하라</li>
+									</ul>
+									<a href="http://domain.godo.co.kr/regist/domain_search_2014.php" class="domain-search">도메인 검색/신청</a>
+								</div>
+							</li>
+							<li>
+								<div class="tit">
+									<h4><img src="//img.godo.co.kr/godomall/header/allservice/num_s_3.png" alt="03" />보기 좋은 쇼핑몰이 <br />매출도 좋아요!</h4>
+								</div>
+								<div class="build-cnt">
+									<a href="http://www.godo.co.kr/shopCenter/shop_freeskin_intro.php">100여종의 무료 디자인스킨</a>
+									<a href="http://design.godo.co.kr/shop/service/custom_new.php">나만을 위한 맞춤 디자인 스킨</a>
+									<a href="http://edu.godo.co.kr/lecture/list.php?mode=list&srt=date&lecturerno=&cate%5B%5D=1000000&cate%5B%5D=2000000&kw=%B5%F0%C0%DA%C0%CE" target="_blank">직접 만드는 쇼핑몰 디자인 교육</a>
+									<a href="http://design.godo.co.kr/">쇼핑몰을 나타내는 디자인 스킨</a>
+								</div>
+							</li>
+							<li class="fir">
+								<div class="tit">
+									<h4><img src="//img.godo.co.kr/godomall/header/allservice/num_s_4.png" alt="04" />나도 이제 사장님!</h4>
+									<p>사업자 신고하고, 결제 연동하기!</p>
+								</div>
+								<div class="build-cnt">
+									<a href="http://www.godo.co.kr/encyclopedia/list.php?s=%BB%E7%BE%F7%C0%DA+%B5%EE%B7%CF&content_no=574" target="_blank">사업자 신고절차</a>
+									<a href="http://www.nts.go.kr/info/info_01_03.asp" target="_blank">사업자 신고 서류 다운로드</a>
+									<a href="http://www.godo.co.kr/echost/power/add/payment/pg-intro.gd#open">전자결제(PG) 서비스 신청</a>
+								</div>
+							</li>
+							<li>
+								<div class="tit">
+									<h4><img src="//img.godo.co.kr/godomall/header/allservice/num_s_5.png" alt="05" />쇼핑몰 운영자는 <br />통신판매업 필수 신고!</h4>
+								</div>
+								<div class="build-cnt">
+									<a href="http://www.godo.co.kr/encyclopedia/list.php?s=%C5%EB%BD%C5+%C6%C7%B8%C5%BE%F7&x=0&y=0&content_no=1266" target="_blank">통신판매업 신고</a>
+									<a href="http://www.godo.co.kr/encyclopedia/list.php?s=%BA%CE%B0%A1+%C5%EB%BD%C5%BB%E7%BE%F7&x=0&y=0&content_no=724" target="_blank">부가통신사업 신고 <br /><span>(자본금 1억 이하 면제)</span></a>
+								</div>
+							</li>
+							<li>
+								<div class="tit">
+									<h4><img src="//img.godo.co.kr/godomall/header/allservice/num_s_6.png" alt="06" />만들었다고 끝이 아닙니다!</h4>
+									<p>체계적인 쇼핑몰 운영하기</p>
+								</div>
+								<div class="build-cnt">
+									<a href="http://edu.godo.co.kr/lecture/list.php?cate[]=3000000" target="_blank">쇼핑몰운영 교육과정</a>
+									<a href="http://edu.godo.co.kr/lecture/list.php?cate[]=4000000" target="_blank">쇼핑몰마케팅 교육과정</a>
+									<a href="http://marketing.godo.co.kr/keyword_integrate.php">쇼핑몰 검색 광고</a>
+								</div>
+							</li>
+						</ol>
+					</div>
+					<div id="asCnt4">
+						<h3>하나부터 차근차근 시작하면 성공이 보입니다!</h3>
+						<ul>
+							<li class="pr1">
+								<div class="tit">
+									<img src="//img.godo.co.kr/godomall/header/allservice/num_b_1.gif" alt="1" />
+									<div>
+										<span>필수적용</span>
+										<strong>검색엔진 무료 등록</strong>
+									</div>
+								</div>
+								<div class="cnt">
+									<p>키워드 검색 시 웹사이트 검색결과가 <br />리스트에 노출되는 서비스입니다.</p>
+									<a href="http://marketing.godo.co.kr/engine.php">검색엔진 무료 등록 </a>
+								</div>
+							</li>
+							<li class="pr2">
+								<div class="tit">
+									<img src="//img.godo.co.kr/godomall/header/allservice/num_b_2.gif" alt="2" />
+									<div>
+										<span>주목도 UP</span>
+										<strong>통합 키워드광고</strong>
+									</div>
+								</div>
+								<div class="cnt">
+									<p>검색결과 화면상단 키워드 광고영역에 <br />사이트가 노출되어 효과적으로 <br />방문자를 유도할 수 있습니다.</p>
+									<a href="http://marketing.godo.co.kr/keyword_integrate.php">통합 키워드광고</a>
+								</div>
+							</li>
+							<li class="pr3">
+								<div class="tit">
+									<img src="//img.godo.co.kr/godomall/header/allservice/num_b_3.gif" alt="3" />
+									<div>
+										<span>노출극대화!</span>
+										<strong>배너광고</strong>
+									</div>
+								</div>
+								<div class="cnt">
+									<p>포털 사이트 메인에 썸네일 컨텐츠를 <br />직접 노출할 수 있어 즉각적인 매출 <br />상승 효과를 볼 수 있습니다.</p>
+									<a href="http://marketing.godo.co.kr/naver_trend.php">네이버 쇼핑박스</a><br />
+									<a href="http://marketing.godo.co.kr/daum_tab1_reg.php">다음 쇼핑박스</a><br />
+									<a href="http://marketing.godo.co.kr/nate_tab1.php">네이트 쇼핑박스</a>
+								</div>
+							</li>
+							<li class="pr4">
+								<div class="tit">
+									<img src="//img.godo.co.kr/godomall/header/allservice/num_b_4.gif" alt="4" />
+									<div>
+										<span>상품노출</span>
+										<strong>입점마케팅</strong>
+									</div>
+								</div>
+								<div class="cnt">
+									<p>판매중인 상품이 포털 검색영역에 <br />노출되어 포털의 고객을 내 쇼핑몰 <br />고객으로 활용할 수 있습니다.</p>
+									<a href="http://marketing.godo.co.kr/naver_kin_reg.php">네이버 쇼핑</a><br />
+									<a href="http://marketing.godo.co.kr/daum_shoppinghow_reg.php">다음 쇼핑하우</a>
+								</div>
+							</li>
+							<li class="pr5">
+								<div class="tit">
+									<img src="//img.godo.co.kr/godomall/header/allservice/num_b_5.gif" alt="5" />
+									<div>
+										<span>틈새시장 공략</span>
+										<strong>모바일광고</strong>
+									</div>
+								</div>
+								<div class="cnt">
+									<p>하루 평균 모바일 이용시간이 <br />PC를 추월하고 있습니다. <br />모바일 광고는 선택이 아닌 필수입니다.</p>
+									<a href="http://marketing.godo.co.kr/daum_mobile_reg.php">다음 모바일광고</a>
+								</div>
+							</li>
+							<li class="pr6">
+								<div class="tit">
+									<img src="//img.godo.co.kr/godomall/header/allservice/num_b_6.gif" alt="6" />
+									<div>
+										<span>충성고객 만들기</span>
+										<strong>브랜드광고</strong>
+									</div>
+								</div>
+								<div class="cnt">
+									<p>카페 및 블로그를 통해 지속적인 <br />컨텐츠를 노출하여 잠재고객 유입과 <br />브랜드 가치를 상승시킵니다.</p>
+									<a href="http://marketing.godo.co.kr/viral.php">바이럴 마케팅</a>
+								</div>
+							</li>
+						</ul>
+					</div>
+					<div id="asCnt5">
+						<h3>편리한 기능과 안정적인 서비스로 쇼핑몰을 관리하세요!</h3>
+						<div class="container">
+							<div class="cnt">
+								<div>
+									<p>지금 필요한 기능, 모바일 앱처럼 간편 설치</p>
+									<strong>고도몰5 무료 기능 확장</strong>
+								</div>
+								<ul>
+									<li>
+										<a href="http://plus.godo.co.kr/goods/view.gd?idx=6" target="_blank" class="operate-link7">
+											<strong>공급사 관리</strong><br />
+											<span>내 쇼핑몰도<br />오픈마켓으로 확장</span>
+										</a>
+									</li>
+									<li>
+										<a href="http://plus.godo.co.kr/goods/view.gd?idx=4" target="_blank"  class="operate-link8">
+											<strong>타임세일전</strong><br />
+											<span>정해진 시간 동안<br />특정 상품 할인 판매</span>
+										</a>
+									</li>
+									<li>
+										<a href="http://plus.godo.co.kr/goods/view.gd?idx=10" target="_blank" class="operate-link9">
+											<strong>장바구니 알림</strong><br />
+											<span>장바구니 이용 고객<br />자동 리마케팅</span>
+										</a>
+									</li>
+									<li>
+										<a href="http://plus.godo.co.kr/goods/view.gd?idx=1" target="_blank" class="operate-link10">
+											<strong>사은품 관리</strong><br />
+											<span>상품 구매 고객에게<br />사은품 혜택 제공</span>
+										</a>
+									</li>
+									<li>
+										<a href="http://plus.godo.co.kr/goods/view.gd?idx=11" target="_blank" class="operate-link11">
+											<strong>멀티팝업</strong><br />
+											<span>팝업창 하나로<br />심플한 공지/홍보</span>
+										</a>
+									</li>
+									<li>
+										<a href="http://plus.godo.co.kr/goods/view.gd?idx=2" target="_blank" class="operate-link12">
+											<strong>페이퍼 쿠폰</strong><br />
+											<span>종이 쿠폰으로<br />오프라인 마케팅</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+							<div class="cnt">
+								<div>
+									<p>쉬운 기능 및 편리한 서비스로 운영비 절감</p>
+									<strong>효율적인 쇼핑몰 운영</strong>
+								</div>
+								<ul>
+									<li>
+										<a href="http://www.godo.co.kr/service/sub_06_smsmarket.php" class="operate-link1">
+											<strong>SMS문자전송</strong><br />
+											<span>저렴한 비용으로<br />고객만족 극대화</span>
+										</a>
+									</li>
+									<li>
+										<a href="http://www.godo.co.kr/service/sub_06_ebank.php" class="operate-link2">
+											<strong>무통장자동입금</strong><br />
+											<span>번거로운 무통장 입금 <br />실시간 자동 처리</span>
+										</a>
+									</li>
+									<li>
+										<a href="http://www.godo.co.kr/service/box_service.php" class="operate-link3">
+											<strong>포장 박스</strong><br />
+											<span>튼튼하고 <br />개성 있는 포장</span>
+										</a>
+									</li>
+									<li>
+										<a href="http://www.godo.co.kr/echost/power/add/convenience/sms-refusal-intro.gd" class="operate-link4">
+											<strong>080 수신거부 서비스</strong><br />
+											<span>고객의 수신거부 요청<br />ARS 자동처리</span>
+										</a>
+									</li>
+									<li>
+										<a href="http://www.godo.co.kr/service/set_printing.php" class="operate-link5">
+											<strong>맞춤 인쇄물</strong><br />
+											<span>내 쇼핑몰만의 <br />차별화된 디자인 인쇄물</span>
+										</a>
+									</li>
+									<li>
+										<a href="http://www.godo.co.kr/echost/power/add/member/certification-intro.gd" class="operate-link6">
+											<strong>휴대폰 본인 확인</strong><br />
+											<span>휴대폰으로 간편하고 <br />안전하게 본인인증</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div id="asCnt6" class="faqupdate1">
+						<h3>글로벌 서비스를 지원합니다!</h3>
+						<div class="faq fir">
+							<div>
+								<img src="//img.godo.co.kr/godomall/header/allservice/global_q.gif" alt="질문" />
+								<p class="q">해외상품을 내 쇼핑몰에서 판매하고 싶으신가요?</p>
+								<img src="//img.godo.co.kr/godomall/header/allservice/global_a.gif" alt="답변" />
+								<p class="a">단 한번의 클릭으로 해외상품 판매시작! 고도 해외구매대행 서비스와 함께 하세요. <br />해외의 유명상품을 수집하여 내 쇼핑몰에서 판매가 가능합니다. <br />저렴한 초기 창업비용으로 재고 부담 없이 해외구매대행으로 성공하세요.</p>
+							</div>
+							<a href="http://www.godo.co.kr/echost/global/overseas-purchase-intro.gd">글로벌쇼핑 <br /><strong>해외구매대행</strong></a>
+							<div class="faq-globalguide">
+								<h4 class="faq-title">해외 구매 대행 쇼핑몰 구축까지 단 20일!  신청부터 오픈까지  모든 단계 무료 가이드!
+								<a href="//static.godo.co.kr/download/overseas_service.pdf" class="manual" target="_blank"><img src="//img.godo.co.kr/godomall/header/allservice/manual.png" alt="서비스안내 매뉴얼" /></a>
+								</h4>
+
+								<ul class="faq-globalguide-step">
+									<li>
+										<span class="icon icon1"><img src="//img.godo.co.kr/godomall/header/allservice/icon_globalguide.png" alt="" /></span>
+										<p> <span class="step">step 01</span>서비스 신청</p>
+										<span class="arr"><img src="//img.godo.co.kr/godomall/header/allservice/icon_globalguide.png" alt="" /></span>
+									</li>
+									<li>
+										<span class="icon icon2"><img src="//img.godo.co.kr/godomall/header/allservice/icon_globalguide.png" alt="" /></span>
+										<p> <span class="step">step 02</span>솔루션 연동 개발</p>
+										<span class="arr"><img src="//img.godo.co.kr/godomall/header/allservice/icon_globalguide.png" alt="" /></span>
+									</li>
+									<li>
+										<span class="icon icon3"><img src="//img.godo.co.kr/godomall/header/allservice/icon_globalguide.png" alt="" /></span>
+										<p> <span class="step">step 03</span>해외상품 진열</p>
+										<span class="arr"><img src="//img.godo.co.kr/godomall/header/allservice/icon_globalguide.png" alt="" /></span>
+									</li>
+									<li>
+										<span class="icon icon4"><img src="//img.godo.co.kr/godomall/header/allservice/icon_globalguide.png" alt="" /></span>
+										<p> <span class="step">step 04</span>해외상품 판매</p>
+										<span class="arr"><img src="//img.godo.co.kr/godomall/header/allservice/icon_globalguide.png" alt="" /></span>
+									</li>
+									<li>
+										<span class="icon icon5"><img src="//img.godo.co.kr/godomall/header/allservice/icon_globalguide.png" alt="" /></span>
+										<p> <span class="step">step 05</span>해외상품 직배송</p>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="faq">
+							<div>
+								<img src="//img.godo.co.kr/godomall/header/allservice/global_q.gif" alt="질문" />
+								<p class="q">해외상품 국제 배송대행 업체를 찾으시나요?</p>
+								<img src="//img.godo.co.kr/godomall/header/allservice/global_a.gif" alt="답변" />
+								<p class="a">고도의 해외배송대행 서비스는 해외에서 가장 규모가 큰 물류창고를 보유하고 있는 <br />NS글로벌 업체와 제휴하여 서비스를 제공합니다. <br />쇼핑몰의 주문서 연동부터 국제배송조회서비스까지 편리함을 제공합니다.</p>
+							</div>
+							<a href="http://www.godo.co.kr/echost/global/overseas-delivery-intro.gd">믿을 수 있는 <br /><strong>해외배송대행</strong></a>
+						</div>
+					</div>
+					<div id="asCnt7">
+						<h3>고도로 이사하세요!</h3>
+						<div class="move1">
+							<ul>
+								<li>
+									<img src="//img.godo.co.kr/godomall/header/allservice/num_s_1.png" alt="01" />
+									<p>고도는 창업유형에 맞춰 <strong>최적화된 솔루션</strong>을 지원합니다.</p>
+								</li>
+								<li>
+									<img src="//img.godo.co.kr/godomall/header/allservice/num_s_2.png" alt="02" />
+									<p>최신 기능 및 서비스를 <strong>정기적으로 업그레이드</strong> 합니다.</p>
+								</li>
+								<li>
+									<img src="//img.godo.co.kr/godomall/header/allservice/num_s_3.png" alt="03" />
+									<p>PC/모바일/테블릿 등 <strong>다양한 판매환경을</strong> 제공합니다.</p>
+								</li>
+								<li>
+									<img src="//img.godo.co.kr/godomall/header/allservice/num_s_4.png" alt="04" />
+									<p>365일 24시간 시스템 모니터링을 통한 <strong>안정적인 호스팅 서비스</strong>를 <br />제공합니다.</p>
+								</li>
+								<li>
+									<img src="//img.godo.co.kr/godomall/header/allservice/num_s_5.png" alt="05" />
+									<p>누구나 쉽고 <strong>편리한 운영환경</strong>을 지원합니다.</p>
+								</li>
+								<li>
+									<img src="//img.godo.co.kr/godomall/header/allservice/num_s_6.png" alt="06" />
+									<p>업계 <strong>최저 창업비용</strong>으로 고객님의 성공을 응원합니다.</p>
+								</li>
+							</ul>
+							<div>
+								<a href="http://www.godo.co.kr/echost/tech/third-party-intro.gd"><img src="//img.godo.co.kr/godomall/header/allservice/move_banner.jpg" alt="" /></a>
+								<a href="http://www.godo.co.kr/echost/tech/third-party-intro.gd" class="detail"><strong>고도로 이전</strong> 자세히보기</a>
+							</div>
+						</div>
+						<h3>고도로 이전 서비스는 <strong>무료!</strong></h3>
+						<div class="move2">
+							<p>신청만 하면 쇼핑몰 이전이 뚝딱! 고객님의 소중한 쇼핑몰 운영데이터 이전부터 도메인 연결까지 안전하게 이전을 약속 드립니다.</p>
+							<ol>
+								<li class="client">
+									<span>고객님</span>
+									<p>상담 및 서비스 신청 <br />(데이터 검수)</p>
+								</li>
+								<li class="staff">
+									<strong>고도 전담 지원</strong>
+									<ol>
+										<li>PG 신청 및 <br />데이터 이전</li>
+										<li>이전 데이터 <br />점검</li>
+										<li>도메인 <br />네임서버 이전</li>
+										<li class="last">이전 완료</li>
+									</ol>
+								</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+			</div>
+			<button type="button" class="close" title="닫기">닫기</button>
+		</div>
+	</div>
+</div>
+<!-- //전체서비스 -->
+
+			
+			
+<!-- GODO GNB END -->
+
+
+
+	<div class="main-wrap">
+		<!-- 쇼핑몰 메인 상단 Start -->
+		<div class="main-top scroll-spy-trigger">
+			<div class="contents">
+				<div class="contents-s01-higher">
+					<div class="slide-bar cycle-slideshow"
+						 data-cycle-fx="scrollVert"
+						 data-cycle-next=".updown-btn .next"
+						 data-cycle-prev=".updown-btn .prev"
+						 data-cycle-speed="200"
+						 data-cycle-pause-on-hover="true"
+						 data-cycle-slides="> .notice-bar">
+
+						<div class="notice-bar">
+							<img src="//img.godo.co.kr/godomall/mall/201611/ico_event.png" alt="event" /><a href="http://www.godo.co.kr/promotion/godomall5/first-anniversary.gd"><span class="notice text normal">고도몰5 출시 1주년, 대규모 감사이벤트! (~8/31)</span></a>
+						</div>
+						<div class="notice-bar">
+							<img src="//img.godo.co.kr/godomall/mall/201611/ico_new.png" alt="new" /><a href="http://www.godo.co.kr/promotion/global/global-shop.gd" target="_blank"><span class="notice text normal">고도몰5 pro '글로벌 쇼핑몰' 오픈 안내 (1/18)</span></a>
+						</div>
+						<div class="notice-bar">
+							<img src="//img.godo.co.kr/godomall/mall/201611/ico_new.png" alt="new" /><a href="http://www.godo.co.kr/promotion/help/help.gd" target="_blank"><span class="notice text normal">나에게 필요한 재능만 골라서 선택한다!  ‘고도:헬프마켓’ 오픈 안내</span></a>
+						</div>
+					</div>
+					<div class="updown-btn">
+						<button class="prev"><img src="//img.godo.co.kr/godomall/mall/201611/btn_pre.png" alt="UP" /></button>
+						<button class="next"><img src="//img.godo.co.kr/godomall/mall/201611/btn_next.png" alt="DOWN" /></button>
+					</div>
+				</div>
+				<!-- 상단 네비게이션 탭 Start -->
+				<div class="navigation">
+					<div class="section-inner">
+						<div class="section ready active">
+							<a href="#section01" class="scroll01">
+								<p class="text normal">쇼핑몰 창업을<br/>준비하세요?</p>
+							</a>
+						</div>
+						<div class="arrow">
+							<img src="//img.godo.co.kr/godomall/mall/201611/tab_arrow.png" alt="" />
+						</div>
+						<div class="section confirm">
+							<a href="#section02" class="scroll02">
+								<p class="text normal">오픈 전 필수사항<br/>확인하셨나요?</p>
+							</a>
+						</div>
+						<div class="arrow">
+							<img src="//img.godo.co.kr/godomall/mall/201611/tab_arrow.png" alt="" />
+						</div>
+						<div class="section function">
+							<a href="#section03" class="scroll03">
+								<p class="text normal">쇼핑몰 기능은<br/>충분한가요?</p>
+							</a>
+						</div>
+						<div class="arrow">
+							<img src="//img.godo.co.kr/godomall/mall/201611/tab_arrow.png" alt="" />
+						</div>
+						<div class="section service">
+							<a href="#section04" class="scroll04">
+								<p class="text normal">운영이 편해지는<br/>서비스를 아세요?</p>
+							</a>
+						</div>
+						<div class="border">
+						</div>
+						<div class="section other">
+							<a href="#section05" class="scroll05">
+								<p class="text normal">창업 선배들의<br/>쇼핑몰은 어떨까요?</p>
+							</a>
+						</div>
+					</div>
+				</div>
+				<!-- 상단 네비게이션 탭 End -->
+				<div id="section01" class="contents-s01-top">
+					<p>먼저, 내게 맞는 쇼핑몰을 선택하세요.</p>
+				</div>
+				<div class="contents-s01-middle">
+					<div class="service-tab">
+						<ul>
+							<li class="tab-goods">
+								<a href="javascript:;"><img src="//img.godo.co.kr/godomall/mall/201611/btn_viewtype_pro.png" alt="상품별"/></a>
+							</li>
+							<li class="tab-keword">
+								<a href="javascript:;"><img src="//img.godo.co.kr/godomall/mall/201611/btn_viewtype_key.png" alt="키워드별" /></a>
+							</li>
+						</ul>
+					</div>
+					<div class="tab-content-01 active">
+						<!-- 이벤트 딱지 -->
+						
+						<ul>
+							<li>
+								<div class="item border yel">
+									<div class="info-box">
+										<img src="//img.godo.co.kr/godomall/mall/201611/tit_godomall5standard.png" alt="godomall5 standard" />
+										<p class="title text s15">가볍게 창업 시작</p>
+										<div class="tab-in">
+											<ul>
+												<li>
+													<div class="list"><span class="text large">디자인 수정 가능</span></div>
+												</li>
+												<li>
+													<div class="list"><span class="text large red bold">플러스샵 이용 가능</span></div>
+												</li>
+												<li>
+													<div class="list"><span class="text large">자동 업데이트</span></div>
+												</li>
+												<li>
+													<div class="list"><span class="text large">글로벌 쇼핑몰 가능</span></div>
+												</li>
+											</ul>
+										</div>
+										<div class="free">
+											<span class="price text red s33 bold">무료</span><span class="text normal price02">(평생)</span>
+										</div>
+										<div class="buttons">
+											<a class="btn-apply" href="https://www.godo.co.kr/echost/solution/godo-solution-regist.gd?smode=free">신청하기</a>
+											<a class="btn-detail" href="http://www.godo.co.kr/echost/solution/godomall-standard-intro.gd?type=product">자세히보기</a>
+										</div>
+									</div>
+								</div>
+								<div class="update-box">
+									<p class="content-up text large">최신업데이트 :</p>
+									<p class="content-num text bold red large">15건</p>
+									<p class="content-date text large">2017-08-23</p>
+								</div>
+							</li>
+							<li>
+								<div class="item pro border red">
+									<div class="info-box">
+										<img src="//img.godo.co.kr/godomall/mall/201611/tit_godomall5pro.png" alt="godomall5 pro" />
+										<p class="title text s15">성공 창업 지름길</p>
+										<div class="tab-in">
+											<ul>
+												<li>
+													<div class="list"><span class="text large">디자인 수정 가능</span></div>
+												</li>
+												<li>
+													<div class="list"><span class="text large red bold">플러스샵 이용 가능</span></div>
+												</li>
+												<li>
+													<div class="list"><span class="text large">개발 소스 수정 가능</span></div>
+												</li>
+												<li>
+													<div class="list"><span class="text large">자동 업데이트</span></div>
+												</li>
+												<li>
+													<div class="list"><span class="text large">글로벌 쇼핑몰 가능</span></div>
+												</li>
+											</ul>
+										</div>
+										<div class="price-info">
+											<div class="price01">
+												<span class="real-price text tahoma s21 gray bold">33,000</span><span class="small text normal gray">원</span>
+											</div>
+											<span class="price text red  tahoma s36 bold">26,400</span><span class="text normal price02">원/월</span>
+										</div>
+										<div class="buttons">
+											<a class="pro-apply" href="https://www.godo.co.kr/echost/solution/godo-solution-regist.gd?smode=pro">신청하기</a>
+											<a class="btn-detail" href="http://www.godo.co.kr/echost/solution/godomall-pro-intro.gd?type=product">자세히보기</a>
+										</div>
+									</div>
+								</div>
+								<div class="update-box">
+									<p class="content-up text large">최신업데이트 :</p>
+									<p class="content-num text bold red large">15건</p>
+									<p class="content-date text large">2017-08-23</p>
+								</div>
+							</li>
+							<li>
+								<div class="item border blk">
+									<div class="info-box">
+										<img src="//img.godo.co.kr/godomall/mall/201611/tit_enamu.png" alt="enamoo" />
+										<p class="title text s15">자유로운 기능 개발</p>
+										<div class="tab-in">
+											<ul>
+												<li>
+													<div class="list"><span class="text large">디자인 수정 가능</span></div>
+												</li>
+												<li>
+													<div class="list"><span class="text large">개발 소스 수정 가능</span></div>
+												</li>
+											</ul>
+										</div>
+										<div class="price-info">
+											<div class="price01">
+												<span class="real-price text tahoma s21 gray bold">880,000</span><span class="text normal gray">원</span>
+											</div>
+											<span class="price text red  tahoma s36 bold">550,000</span><span class="text normal price02">원</span>
+										</div>
+										<div class="buttons">
+											<a class="btn-apply" href="https://www.godo.co.kr/ServiceRegister/register_step1.php?smode=self">신청하기</a>
+											<a class="btn-detail" href="http://www.godo.co.kr/echost/solution/enamoo-self-intro.gd?type=product">자세히보기</a>
+										</div>
+									</div>
+								</div>
+								<div class="update-box">
+									<p class="content-up text large">최신업데이트 :</p>
+									<p class="content-num text bold red large">9건</p>
+									<p class="content-date text large">2017-08-31</p>
+								</div>
+							</li>
+						</ul>
+						<div class="clear"></div>
+						<div class="bottom-link">
+							<p class="text large">
+								<a href="http://www.godo.co.kr/echost/solution/godomall5-compare.gd" onclick="window.open(this.href,'pop','width=800,height=790');return false;">쇼핑몰 한눈에 비교하기<img src="//img.godo.co.kr/godomall/mall/201611/arrow_s.png" alt=""/></a>
+							</p>
+						</div>
+					</div>
+					<div class="tab-content-02">
+						<div class="keyword-box">
+							<ul>
+								<li>
+									<a class="go" href="http://www.godo.co.kr/echost/solution/godomall-standard-intro.gd?type=keyword">
+										<div class="item">
+											<p class="large text s25">부담 없는 창업</p>
+											<p class="small text large">월 사용료 평생 무료</p>
+											<img src="//img.godo.co.kr/godomall/mall/201611/btn_square.png" alt="이동" />
+										</div>
+									</a>
+								</li>
+								<li>
+									<a class="go" href="http://www.godo.co.kr/promotion/hae-dream.gd?type=keyword" target="_blank">
+										<div class="item">
+											<p class="large text s25">1:1 창업지원</p>
+											<p class="small text large">고객맞춤형 해드림 서비스</p>
+											<img src="//img.godo.co.kr/godomall/mall/201611/btn_square.png" alt="이동" />
+										</div>
+									</a>
+								</li>
+								<li>
+									<a class="go" href="http://www.godo.co.kr/echost/solution/godomall-pro-intro.gd?type=keyword_auto">
+										<div class="item last">
+											<p class="large text s25">자동기능추가&개발</p>
+											<p class="small text large">국내최초 신개념 쇼핑몰</p>
+											<img src="//img.godo.co.kr/godomall/mall/201611/btn_square.png" alt="이동" />
+										</div>
+									</a>
+								</li>
+							</ul>
+						</div>
+						<div class="keyword-box-02">
+							<img src="//img.godo.co.kr/godomall/mall/201611/img_shopmain_top.png" alt="지금뜨는 쇼핑몰 창업 키워드" />
+						</div>
+						<div class="keyword-box">
+							<ul>
+								<li>
+									<a class="go" href="http://www.godo.co.kr/echost/solution/godomall-pro-intro.gd?type=keyword_hosting">
+										<div class="item">
+											<p class="large text s25">쇼핑몰+단독 호스팅</p>
+											<p class="small text large">넓게넓게 나만 사용</p>
+											<img src="//img.godo.co.kr/godomall/mall/201611/btn_square.png" alt="이동" />
+										</div>
+									</a>
+								</li>
+								<li>
+									<a class="go" href="http://www.godo.co.kr/echost/solution/enamoo-self-intro.gd?type=keyword">
+										<div class="item">
+											<p class="large text s25">소스 100% 제공</p>
+											<p class="small text large">부동의 업계 1위 쇼핑몰</p>
+											<img src="//img.godo.co.kr/godomall/mall/201611/btn_square.png" alt="이동" />
+										</div>
+									</a>
+								</li>
+								<li>
+									<a class="go" href="http://www.godo.co.kr/echost/global/overseas-purchase-intro.gd?type=keyword">
+										<div class="item last">
+											<p class="large text s25">해외구매대행</p>
+											<p class="small text large">재고걱정NO, 빠른창업OK</p>
+											<img src="//img.godo.co.kr/godomall/mall/201611/btn_square.png" alt="이동" />
+										</div>
+									</a>
+								</li>
+							</ul>
+						</div>
+						<div class="clear"></div>
+						<div class="bottom-link">
+							<p>
+								<a href="http://www.godo.co.kr/echost/solution/godomall5-compare.gd" onclick="window.open(this.href,'pop','width=800,height=790');return false;">쇼핑몰 한눈에 비교하기<img src="//img.godo.co.kr/godomall/mall/201611/arrow_s.png" alt=""/></a>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 쇼핑몰 메인 상단 End -->
+
+		<!-- 쇼핑몰 메인 홍보영역 1 Start -->
+		<div id="section02" class="main-promotion1 scroll-spy-trigger">
+			<p class="title">쇼핑몰 오픈, 이건 꼭 해야 해요.</p>
+			<div class="item">
+				<ul>
+					<li>
+						<a href="http://design.godo.co.kr/">
+							<div class="list">
+								<img src="//img.godo.co.kr/godomall/mall/201611/ico_add01.png" alt="이동" />
+								<p class="first-text text large">디자인은 디자이너에게</p>
+								<p class="second-text text bold s18">쇼핑몰 스킨</p>
+								<div class="btn-detail">
+									<span>자세히보기</span>
+								</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="http://www.godo.co.kr/echost/power/add/payment/pg-intro.gd">
+							<div class="list">
+								<img src="//img.godo.co.kr/godomall/mall/201611/ico_add02.png" alt="이동" />
+								<p class="first-text text large">쇼핑몰 결제 70% 신용카드 지원</p>
+								<p class="second-text text bold s18">전자결제(PG)</p>
+								<div class="btn-detail">
+									<span>자세히보기</span>
+								</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="http://domain.godo.co.kr/regist/domain_search_2014.php">
+							<div class="list last">
+								<img src="//img.godo.co.kr/godomall/mall/201611/ico_add03.png" alt="이동" />
+								<p class="first-text text large">쇼핑몰 주소는 짧고 간결하게</p>
+								<p class="second-text text bold s18">도메인 등록</p>
+								<div class="btn-detail">
+									<span>자세히보기</span>
+								</div>
+							</div>
+						</a>
+					</li>
+				</ul>
+				<ul class="ul-second">
+					<li>
+						<a href="http://www.godo.co.kr/echost/power/add/convenience/sms-refusal-intro.gd">
+							<div class="list">
+								<img src="//img.godo.co.kr/godomall/mall/201611/ico_add04.png" alt="이동" />
+								<p class="first-text text large">광고 SMS 발송 시 필수</p>
+								<p class="second-text text bold s18">080 수신거부 서비스</p>
+								<div class="btn-detail">
+									<span>자세히보기</span>
+								</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="https://www.godo.co.kr/mygodo/sms/intro.gd">
+							<div class="list">
+								<img src="//img.godo.co.kr/godomall/mall/201611/ico_add05.png" alt="이동" />
+								<p class="first-text text large">해킹 후 스팸 전송 방어</p>
+								<p class="second-text text bold s18">발신번호 사전 등록</p>
+								<div class="btn-detail">
+									<span>자세히보기</span>
+								</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="http://hosting.godo.co.kr/valueadd/ssl_service.php">
+							<div class="list last">
+								<img src="//img.godo.co.kr/godomall/mall/201611/ico_add06.png" alt="이동" />
+								<p class="first-text text large">쇼핑몰 계의 SECOM</p>
+								<p class="second-text text bold s18">보안서버</p>
+								<div class="btn-detail">
+									<span>자세히보기</span>
+								</div>
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!-- 쇼핑몰 메인 홍보영역 1 End -->
+
+		<!-- 쇼핑몰 메인 홍보영역 2 Start -->
+		<div id="section03" class="main-promotion2 scroll-spy-trigger">
+			<p class="copy">쇼핑몰 기능 확장은 언제나 할 수 있어요.</p>
+			<div class="item-box">
+				<div class="box-plusshop">
+					<a href="http://plus.godo.co.kr/" target="_blank"><p class="title text bold s24 white">플러스샵</p></a>
+					<img class="arrow-red" src="//img.godo.co.kr/godomall/mall/201611/arrow_b.png" alt="이동" />
+					<div class="clear"></div>
+					<div class="list">
+						<p class="dot"><img src="//img.godo.co.kr/godomall/mall/201611/dot_red.png" alt="" /></p>
+						<p class="text large">버튼 한번에<br/>기능추가 한 개</p>
+						<p class="dot"><img src="//img.godo.co.kr/godomall/mall/201611/dot_red.png" alt="" /></p>
+						<p class="text large">고도몰5 전용</p>
+					</div>
+				</div>
+				<div class="in-items">
+					<ul>
+						<li>
+							<a href="http://plus.godo.co.kr/goods/view.gd?idx=6" target="_blank">
+								<div class="list">
+									<img src="//img.godo.co.kr/godomall/mall/201611/ico_plus01.png" alt="이동" />
+									<p class="title01 text bold white s17">공급사 관리</p>
+									<pre class="title02 text white normal">내 쇼핑몰도
+오픈마켓으로 확장</pre>
+								</div>
+							</a>
+						</li>
+						<li>
+							<a href="http://plus.godo.co.kr/goods/view.gd?idx=4" target="_blank">
+								<div class="list">
+									<img src="//img.godo.co.kr/godomall/mall/201611/ico_plus02.png" alt="이동" />
+									<p class="title01 text bold white s17">타임세일전</p>
+									<pre class="title02 text white normal">정해진 시간 동안
+특정 상품 할인 판매</pre>
+								</div>
+							</a>
+						</li>
+						<div class="clear"></div>
+						<li class="under">
+							<a href="http://plus.godo.co.kr/goods/view.gd?idx=1" target="_blank">
+								<div class="list">
+									<img src="//img.godo.co.kr/godomall/mall/201611/ico_plus03.png" alt="이동" />
+									<p class="title01 text bold white s17">사은품 관리</p>
+									<pre class="title02 text white normal">상품 구매 고객에게
+사은품 혜택 제공</pre>
+								</div>
+							</a>
+						</li>
+						<li class="under">
+							<a href="http://plus.godo.co.kr/goods/view.gd?idx=10" target="_blank">
+								<div class="list">
+									<img src="//img.godo.co.kr/godomall/mall/201611/ico_plus04.png" alt="이동" />
+									<p class="title01 text bold white s17">장바구니 알림</p>
+									<pre class="title02 text white normal">장바구니 이용 고객
+자동 리마케팅</pre>
+								</div>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="box-tuning">
+					<a href="http://www.godo.co.kr/echost/tuning/main.gd" target="_blank"><p class="title text bold s24 white">튜닝센터</p></a>
+					<img class="arrow-red" src="//img.godo.co.kr/godomall/mall/201611/arrow_b.png" alt="이동" />
+					<div class="tune-img">
+						<img src="//img.godo.co.kr/godomall/mall/201611/ico_tuning.png" alt="튜닝센터"/>
+					</div>
+					<div class="clear"></div>
+					<pre class="list text normal">내 쇼핑몰에 꼭 맞춘
+나만의 기능 개발</pre>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<!-- 쇼핑몰 메인 홍보영역 2 End -->
+
+		<!-- 쇼핑몰 메인 홍보영역 3 Start -->
+		<div id="section04" class="main-promotion3 scroll-spy-trigger">
+			<p class="title">쇼핑몰 운영도 심플해질 수 있어요.</p>
+			<div class="item">
+				<ul>
+					<li>
+						<a href="http://www.godo.co.kr/echost/power/add/member/sms-intro.gd">
+							<div class="list">
+								<div class="add-text">
+									<p class="first-text text bold big">SMS 문자전송</p>
+									<p class="second-text text normal">상품 구매 처리단계<br/>문자로 고객을 안심시켜주세요</p>
+								</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="http://www.godo.co.kr/echost/power/add/payment/ebank-intro.gd">
+							<div class="list">
+								<div class="add-text">
+									<p class="first-text text bold big">뱅크다퀵</p>
+									<p class="second-text text normal">무통장입금 주문건건이<br/>통장이랑 비교하고 계신가요?</p>
+								</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="http://www.godo.co.kr/echost/power/add/mobile/smart-app-intro.gd">
+							<div class="list">
+								<div class="add-text">
+									<p class="first-text text bold big">스마트앱</p>
+									<p class="second-text text normal">한 번 결제로 푸쉬 메시지<br/>무제한 발송! 유지보수 무료!</p>
+								</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<a href="http://www.godo.co.kr/echost/power/add/convenience/godobill-intro.gd">
+							<div class="list last">
+								<div class="add-text">
+									<p class="first-text text bold big">고도빌</p>
+									<p class="second-text text normal">고객이 신청한 전자세금계산서<br/>버튼 한번으로 발행 완료했어요</p>
+								</div>
+							</div>
+						</a>
+					</li>
+				</ul>
+				<ul class="more">
+					<li>
+						<a href="http://www.godo.co.kr/echost/power/add/design/photocompare-intro.gd">
+							<div class="list">
+								<div class="add-text">
+									<p class="first-text text bold big">상품촬영 견적비교</p>
+									<p class="second-text text normal">무료 견적부터 사진 촬영 및<br/>보정까지 한번에 해결하세요</p>
+								</div>
+							</div>
+						</a>
+					</li>
+					<li>
+						<div class="list">
+							<a href="http://www.godo.co.kr/echost/power/add/convenience/packing-intro.gd">
+								<div class="add-text">
+									<p class="first-text text bold big">포장박스/봉투</p>
+									<p class="second-text text normal">고객에게 보낼 소중한 상품<br/>포장 제품은 어떤 게 좋을까요?</p>
+								</div>
+							</a>
+						</div>
+					</li>
+					<li>
+						<div class="list">
+							<a href="http://www.godo.co.kr/echost/power/add/member/livefeed-intro.gd">
+								<div class="add-text">
+									<p class="new first-text text bold big">
+										<span>실시간 상담 채팅</span>
+										<img src="//img.godo.co.kr/godomall/mall/201611/ico_new2.png" alt="new"/>
+									</p>
+									<p class="second-text text normal">문의 내용 분석하지 말고<br/>직접 보면서 상담하세요</p>
+								</div>
+							</a>
+						</div>
+					</li>
+					<li>
+						<div class="list last">
+							<a href="http://www.godo.co.kr/echost/power/add/convenience/payco-search-intro.gd">
+								<div class="add-text">
+									<p class="new first-text text bold big">
+										페이코 서치
+										<img src="//img.godo.co.kr/godomall/mall/201611/ico_new2.png" alt="new"/>
+									</p>
+									<p class="second-text text normal">상품이 많다면 정말 필수!<br/>검색이 빛의 속도로 빨라져요</p>
+								</div>
+							</a>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!-- 쇼핑몰 메인 홍보영역 3 End -->
+
+		<!-- 메인 대표쇼핑몰 영역 Start -->
+		<div id="section05" class="main-goodshop scroll-spy-trigger">
+			<div class="contents">
+				<div class="goodshop-menu">
+					<div class="title">
+						<img src="//img.godo.co.kr/godomall/main/1611/title.png" alt="지금, 고도와 함께 하는 대표 쇼핑몰">
+					</div>
+					<ul class="tab">
+						<li>
+							<div class="item">
+								<a href="#godomall5" class="on">고도몰5 pro</a>
+							</div>
+						</li>
+						<li>
+							<div class="item">
+								<a href="#fashion">패션/잡화</a>
+							</div>
+						</li>
+						<li>
+							<div class="item">
+								<a href="#health">식품/건강</a>
+							</div>
+						</li>
+						<li>
+							<div class="item">
+								<a href="#electronic">전자/가전</a>
+							</div>
+						</li>
+						<li>
+							<div class="item">
+								<a href="#living">취미/생활</a>
+							</div>
+						</li>
+						<li>
+							<div class="item">
+								<a href="#interior">가구/인테리어</a>
+							</div>
+						</li>
+						<li>
+							<div class="item">
+								<a href="#infant">유아/아동</a>
+							</div>
+						</li>
+						<li>
+							<div class="item">
+								<a href="#sport">스포츠/레저</a>
+							</div>
+						</li>
+						<li>
+							<div class="item">
+								<a href="#other">해외구매대행</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="box">
+					
+<div id="godomall5" class="goodshop-contents"
+	 data-cycle-fx="fade"
+	 data-cycle-timeout=0
+	 data-cycle-pager="#godomall5 .pager"
+	 data-cycle-pager-template="<button title='{{slideNum}}'>{{slideNum}}</button>"
+	 data-cycle-slides="> .list"
+>
+	<div class="list">
+								<div class="item-thumb">
+			<a href="http://www.sajomall.co.kr/" data-num="390" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918101805.jpg" width="180" height="130" alt="사조해표"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">사조해표</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.kosney.co.kr/" data-num="389" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918102638.jpg" width="180" height="130" alt="코즈니"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">코즈니</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://mw.yanolja.com" data-num="394" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918103363.jpg" width="180" height="130" alt="야놀자 F&G"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">야놀자 F&G</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://dodram.com" data-num="361" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918104293.jpg" width="180" height="130" alt="도드람"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">도드람</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://mementomori.co.kr" data-num="360" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918105043.jpg" width="180" height="130" alt="메멘토모리"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">메멘토모리</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://henckelkorea.com" data-num="358" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918110130.jpg" width="180" height="130" alt="헹켈코리아"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">헹켈코리아</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://egoist.co.kr" data-num="175" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918110861.jpg" width="180" height="130" alt="EGOIST"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">EGOIST</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.beautifulmarket.org/" data-num="395" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918111928.jpg" width="180" height="130" alt="뷰티풀마켓"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">뷰티풀마켓</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://winsomeu.com" data-num="359" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918112787.jpg" width="180" height="130" alt="윈썸유"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">윈썸유</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.citlus.com" data-num="176" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918113629.jpg" width="180" height="130" alt="CITLUS"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">CITLUS</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.modaloco.com" data-num="177" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918114791.jpg" width="180" height="130" alt="모다로코"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">모다로코</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.graceraiment.com" data-num="178" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918115975.jpg" width="180" height="130" alt="그레이스레이먼트"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">그레이스레이먼트</p>
+			</a>
+		</div>
+							</div>
+	<div class="list">
+				<div class="item-thumb">
+			<a href="http://www.castelbajac.com" data-num="179" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918121450.jpg" width="180" height="130" alt="까스텔 바쟉"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">까스텔 바쟉</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.spodaq.co.kr" data-num="180" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918122294.jpg" width="180" height="130" alt="스포닥"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">스포닥</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.blancnoir.co.kr" data-num="181" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918123202.jpg" width="180" height="130" alt="브랑누아"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">브랑누아</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.rucyco.com" data-num="182" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918124934.jpg" width="180" height="130" alt="루시코"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">루시코</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.sydeliciousshop.com" data-num="183" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918125921.jpg" width="180" height="130" alt="삼양맛샵"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">삼양맛샵</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.hs-food.co.kr" data-num="204" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918131003.jpg" width="180" height="130" alt="햇살푸드"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">햇살푸드</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.lovely-ming.com" data-num="185" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918132115.jpg" width="180" height="130" alt="러블리밍"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">러블리밍</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.pogme.co.kr" data-num="186" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918133114.jpg" width="180" height="130" alt="포근포그미"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">포근포그미</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.stylesome.co.kr" data-num="187" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918134288.jpg" width="180" height="130" alt="스타일썸"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">스타일썸</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.artlala.co.kr" data-num="188" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918134905.jpg" width="180" height="130" alt="아트랄라"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">아트랄라</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.cindyshop.co.kr" data-num="189" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918135640.jpg" width="180" height="130" alt="Cindy Shop"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">Cindy Shop</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.spoonmom.co.kr" data-num="190" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918140230.jpg" width="180" height="130" alt="스푼맘"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">스푼맘</p>
+			</a>
+		</div>
+							</div>
+	<div class="list">
+				<div class="item-thumb">
+			<a href="http://www.shabath.com" data-num="191" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918141583.jpg" width="180" height="130" alt="샤바스"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">샤바스</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.allpanda.com" data-num="192" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918142498.jpg" width="180" height="130" alt="올판다"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">올판다</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.bestbeing.co.kr" data-num="193" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918143795.jpg" width="180" height="130" alt="베스트빙"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">베스트빙</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.ulleung364.com" data-num="194" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918144915.jpg" width="180" height="130" alt="흑염소목장364"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">흑염소목장364</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.cljeju.com" data-num="195" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918145818.jpg" width="180" height="130" alt="청룡농원"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">청룡농원</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.elde.kr" data-num="197" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918150759.jpg" width="180" height="130" alt="엘데팩토리"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">엘데팩토리</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.jinioffice.co.kr" data-num="198" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918151671.jpg" width="180" height="130" alt="지니오피스"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">지니오피스</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.joypaint.co.kr" data-num="199" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918152791.jpg" width="180" height="130" alt="조이페인트"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">조이페인트</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.papa09.com" data-num="200" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918154090.jpg" width="180" height="130" alt="아빠공구"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">아빠공구</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.banpumsale.com" data-num="201" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918154875.jpg" width="180" height="130" alt="반품닷컴"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">반품닷컴</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.jacksports.co.kr" data-num="202" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918155652.jpg" width="180" height="130" alt="JACKSPORTS"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">JACKSPORTS</p>
+			</a>
+		</div>
+								<div class="item-thumb">
+			<a href="http://www.decoqueen.co.kr" data-num="203" target="_blank">
+				<img src="//www.godo.co.kr/upimage/goodshop/banner/201708/080918161257.jpg" width="180" height="130" alt="데코퀸"/>
+				<span><!-- 마우스오버 아웃라인 --></span>
+				<p class="text normal">데코퀸</p>
+			</a>
+		</div>
+					</div>
+	<div class="control">
+		<span class="pager">
+			<!-- 코드 동적으로 들어감 -->
+		</span>
+	</div>
+</div>				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<!-- 메인 대표쇼핑몰 영역 End -->
+		<!-- 메인 상담안내 영역 Start -->
+		<div class="main-inquiry">
+			<div class="inquiry-contents">
+				<div class="left">
+					<img src="//img.godo.co.kr/godomall/main/1611/h_02_callnumber.png" alt="상담문의는 1688-7662" />
+					<div class="text normal time">평일 09:00~18:00 / 토요일 09:00~13:00</div>
+				</div>
+				<div class="right">
+					<ul>
+						<li>
+							<div class="list">
+								<img src="//img.godo.co.kr/godomall/main/1611/h_icon02.png" alt="FAQ" /><a href="http://www.godo.co.kr/customer/faq-list.gd?bn=1"><span class="text normal">FAQ</span></a><span class="text normal"> / <a href="javascript:;" class="btn-member-inquiry"><span class="text normal">1:1문의</span></a>
+							</div>
+						</li>
+						<li>
+							<div class="list">
+								<a href="javascript:;" class="btn-business-consult"><img src="//img.godo.co.kr/godomall/main/1611/h_icon05.png" alt="빠른 창업상담" /><span class="text normal">빠른 창업상담<span></span></span></a>
+							</div>
+						</li>
+						<li>
+							<div class="list">
+								<a href="javascript:;" id="btn-open-startguide"><img src="//img.godo.co.kr/godomall/main/1611/h_icon03.png" alt="창업가이드" /><span class="text normal">창업가이드</span></a>
+							</div>
+						</li>
+						<li>
+							<div class="list">
+								<a href="http://www.godo.co.kr/customer_center/patch.php?bn=1" target="_blank"><img src="//img.godo.co.kr/godomall/main/1611/h_icon04.png" alt="기능 Upgrade" /><span class="text normal">기능 Upgrade</span></a>
+							</div>
+						</li>
+						<li>
+							<div class="list">
+								<a href="http://www.godo.co.kr/customer/board-list.gd?type=notice"><img src="//img.godo.co.kr/godomall/main/1611/h_icon01.png" alt="빠른 창업상담" /><span class="text normal">공지사항<span></span></span></a>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+		<!-- 메인 상담안내 영역 End -->
+	</div>
+
+
+	<div class="footer-wrap resetOld">
+	<div class="contents">
+		<div class="link">
+			<a href="http://www.godo.co.kr/company/" target="_blank">회사소개</a>
+			<a href="http://www.godo.co.kr/etc/agreement/join-agreement.gd">약관</a>
+			<a class="privacy" href="http://www.godo.co.kr/etc/agreement/privacy-agreement.gd">개인정보처리방침</a>
+			<a href="http://www.godo.co.kr/reseller/">리셀러</a>
+			<a href="http://www.godo.co.kr/company3/partner.html" onclick="window.open(this.href,'pop','width=821px,height=870px,scrollbars=yes');return false;">제휴문의</a>
+			
+							
+		</div>
+		<div class="about">
+			<address>
+				엔에이치엔고도(주) <span>대표 : 이윤식</span><span>서울특별시 구로구 디지털로32길 30, 13층 (코오롱디지털타워빌란트 1차)</span><br />
+				사업자등록번호 : 120-86-46911<span>통신판매업신고 : 2015-서울구로-0049</span><span><a href="http://www.ftc.go.kr/info/bizinfo/communicationView.jsp?apv_perm_no=2015316015930200049&area1=&area2=&currpage=1&searchKey=04&searchVal=1208646911&stdate=&enddate=" target="_blank">사업자 정보확인</a></span><br />
+				개인정보보호책임자 : 문창재 (<a href="mailto:privacy1@godo.co.kr">privacy1@godo.co.kr</a>)<span>전화 : 1688-7662</span><span>팩스 : 02-567-3744</span><span>호스팅 제공 : 엔에이치엔고도(주)</span><br/>
+				ⓒ NHN godo<strong>:</strong> Corp. All Rights Reserved.			</address>
+		</div>
+		<div class="icon">
+			<a href="https://www.facebook.com/nhngodo" target="_blank"><img src="//img.godo.co.kr/godomall/footer/j_04_facebook.png" onmouseover="this.src='//img.godo.co.kr/godomall/footer/j_04_facebook_on.png'" onmouseout="this.src='//img.godo.co.kr/godomall/footer/j_04_facebook.png'" alt="고도 페이스북"/></a>
+			<a href="http://blog.naver.com/godomallnews" target="_blank"><img src="//img.godo.co.kr/godomall/footer/j_04_blog.png" onmouseover="this.src='//img.godo.co.kr/godomall/footer/j_04_blog_on.png'" onmouseout="this.src='//img.godo.co.kr/godomall/footer/j_04_blog.png'" alt="고도 블로그"/></a>
+			<a href="https://www.instagram.com/nhngodo/" target="_blank"><img src="//img.godo.co.kr/godomall/footer/j_04_insta.png" onmouseover="this.src='//img.godo.co.kr/godomall/footer/j_04_insta_on.png'" onmouseout="this.src='//img.godo.co.kr/godomall/footer/j_04_insta.png'" alt="고도 인스타그램"/></a>
+			<a href="http://talk.godo.co.kr" target="_blank"><img src="//img.godo.co.kr/godomall/footer/j_04_talk.png" onmouseover="this.src='//img.godo.co.kr/godomall/footer/j_04_talk_on.png'" onmouseout="this.src='//img.godo.co.kr/godomall/footer/j_04_talk.png'" alt="고도톡"/></a>
+			<a href="http://wizu.co.kr" target="_blank"><img src="//img.godo.co.kr/godomall/footer/j_04_wizu.png" onmouseover="this.src='//img.godo.co.kr/godomall/footer/j_04_wizu_on.png'" onmouseout="this.src='//img.godo.co.kr/godomall/footer/j_04_wizu.png'" alt="위쥬"/></a>
+		</div>
+		<div class="footer-clear"></div>
+		<div class="isms">
+			<a href="http://talk.godo.co.kr/view.php?cate=simsim&mode=simsim3&sno=980" target="_blank"><img src="//img.godo.co.kr/godomall/footer/j_03_img.png" alt="정보보호관리체계 ISMS 인증 획득" /></a>
+		</div>
+	</div>
+</div>
+
+<iframe name="ifrmHidden" id="ifrmHidden" style="width:0px;height:0px;display:none;"></iframe>
+
+
+
+
+
+	
+
+
+	
+
+<!--AceCounter-II Log Gathering for AceTag Manager V.9.2.20170103-->
+<script type="text/javascript">
+var _AceTM = (function (_j, _s, _b, _o, _y) {
+	var _uf='undefined',_pmt='',_lt=location;var _ap = String(typeof(_y.appid) != _uf ? _y.appid():(isNaN(window.name))?0:window.name);var _ai=(_ap.length!=6)?(_j!=0?_j:0):_ap;if(typeof(_y.em)==_uf&&_ai!=0){var _sc=document.createElement('script');var _sm=document.getElementsByTagName('script')[0];
+	var _cn={tid:_ai+_s,hsn:_lt.hostname,hrf:(document.referrer.split('/')[2]),dvp:(typeof(window.orientation)!=_uf?(_ap!=0?2:1):0),tgp:'',tn1:_y.uWorth,tn2:0,tn3:0,tw1:'',tw2:'',tw3:'',tw4:'',tw5:'',tw6:'',tw7:_y.pSearch};_cn.hrf=(_cn.hsn!=_cn.hrf)?_cn.hrf:'in';for(var _aix in _y){var _ns=(_y[_aix])||{};
+	if(typeof(_ns)!='function'){_cn.tgp=String(_aix).length>=3?_aix:'';_cn.tn2=_ns.pPrice;_cn.tn3=_ns.bTotalPrice;_cn.tw1=_ns.bOrderNo;_cn.tw2=_ns.pCode;_cn.tw3=_ns.pName;_cn.tw4=_ns.pImageURl;_cn.tw5=_ns.pCategory;_cn.tw6=_ns.pLink;break;};};_cn.rnd=(new Date().getTime());for(var _alx in _cn){	var _ct=String(_cn[_alx]).substring(0,128);_pmt+=(_alx+"="+encodeURIComponent((_ct!=_uf)?_ct:'')+"&");};_y.acid=_ai;_y.atid=_cn.tid;_y.em=_cn.rnd;_sc.src=((_lt.protocol.indexOf('http')==0?_lt.protocol:'http:')+'//'+_b+'/'+_o)+'?'+_pmt+'py=0';_sm.parentNode.insertBefore(_sc,_sm);};return _y;
+})(100551,'BV-20-A', 'atm.acecounter.com','ac.js',window._AceTM||{});
+</script>
+<!--AceCounter-II Log Gathering for AceTag Manager End -->
+	
+
+
+<!-- AceCounter Log Gathering Script V.72.2013010701 -->
+<script language='javascript'>
+if(typeof _GUL == 'undefined'){
+var _GUL = 'gtb1.acecounter.com';var _GPT='8080'; var _AIMG = new Image(); var _bn=navigator.appName; var _PR = location.protocol=="https:"?"https://"+_GUL:"http://"+_GUL+":"+_GPT;if( _bn.indexOf("Netscape") > -1 || _bn=="Mozilla"){ setTimeout("_AIMG.src = _PR+'/?cookie';",1); } else{ _AIMG.src = _PR+'/?cookie'; };
+document.writeln("<scr"+"ipt language='javascript' src='/acecounter/acecounter_V70.js'></scr"+"ipt>");
+}
+</script>
+<noscript><img src='http://gtb1.acecounter.com:8080/?uid=AM1M2911763914&je=n&' border=0 width=0 height=0></noscript>
+<!-- AceCounter Log Gathering Script End --> 
+	
+	<script type="text/javascript" src="//www.godo.co.kr/acecounter/criteo_godo_ld.js" async="true"></script>
+
+	<script type="text/javascript">var CRITEO_CONF = [[{
+
+		pageType: 'home',
+		'Segment' : '4'
+
+	}], [6771, 'pgi', 'as.', '010', [[7722192, 7722193]],{'Segment':['si',0]}]];
+	if (typeof (CRITEO) != "undefined") { CRITEO.Load(false); }</script>
+
+	<script type="text/javascript">
+var roosevelt_params = {
+	retargeting_id:'yaCudxAzoEZHcSrJAEX2Aw00',
+	tag_label:'fWiJXo4hQl29a5vlCnbwIg'
+};
+</script>
+<script type="text/javascript" src="//adimg.daumcdn.net/rt/roosevelt.js"></script>
+	 <script type="text/javascript"> 
+ //<![CDATA[ 
+ var DaumConversionDctSv="type=M,orderID=,amount="; 
+ var DaumConversionAccountID="yaCudxAzoEZHcSrJAEX2Aw00"; 
+ if(typeof DaumConversionScriptLoaded=="undefined"&&location.protocol!="file:"){ 
+ 	var DaumConversionScriptLoaded=true; 
+ 	document.write(unescape("%3Cscript%20type%3D%22text/javas"+"cript%22%20src%3D%22"+(location.protocol=="https:"?"https":"http")+"%3A//s1.daumcdn.net/svc/original/U03/commonjs/cts/vr200/dcts.js%22%3E%3C/script%3E")); 
+ } 
+ //]]> 
+ </script> 
+
+	 <!-- Google Code for &#54924;&#50896;&#44032;&#51077;PC Conversion Page -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1012187661;
+var google_conversion_language = "en";
+var google_conversion_format = "2";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "g7ciCJu2tRMQjYTT4gM";
+var google_remarketing_only = false;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/1012187661/?label=g7ciCJu2tRMQjYTT4gM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+	<script type="text/javascript" src="//wcs.naver.net/wcslog.js"> </script> 
+<script type="text/javascript"> 
+if (!wcs_add) var wcs_add={};
+wcs_add["wa"] = "s_59547f50571";
+if (!_nasa) var _nasa={};
+wcs.inflow("godo.co.kr");
+wcs_do(_nasa);
+</script>
+	
+<!-- *) 공통 분석스크립트  -->
+
+<!-- AceClick WebSite Gathering Script V0.9.20131114 -->
+<script language='javascript' type='text/javascript'> 
+if(typeof(AMRS_GC)=='undefined'){
+ var AMRS_O=[];var AMRS_CK = new Image();var AMRS_GC='AG3A385225186';var AMRS_GD='mrsg.aceclick.co.kr';var AMRS_GP='8080';var AMRS_TI=(new Date()).getTime();
+ var AMRS_PR = location.protocol=="https:"?"https://"+AMRS_GD+":843":"http://"+AMRS_GD+":"+AMRS_GP; AMRS_CK.src = AMRS_PR+'/?cookie'; 
+ if(typeof(Array.prototype.push)!='undefined'){ AMRS_O.push(AMRS_CK);}
+ document.writeln("<scr"+"ipt type='text/Javascript' src='"+location.protocol+"//mrss.aceclick.co.kr/aceclick.js?rt="+AMRS_TI+"'></scr"+"ipt>");
+}
+</script>
+<!-- AceClick WebSite Gathering Script End V0.9.20131114 -->
+	<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-59284003-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+	<!-- WIDERPLANET  SCRIPT START 2015.6.8 -->
+<div id="wp_tg_cts" style="display:none;"></div>
+<script type="text/javascript">
+var wptg_tagscript_vars = wptg_tagscript_vars || [];
+wptg_tagscript_vars.push(
+(function() {
+	return {
+		wp_hcuid:"",  	/*Cross device targeting을 원하는 광고주는 로그인한 사용자의 Unique ID (ex. 로그인 ID, 고객넘버 등)를 암호화하여 대입.*/
+		ti:"21929",	/*광고주 코드*/
+		ty:"Home",	/*트래킹태그 타입*/
+		device:"web"	/*디바이스 종류 (web 또는 mobile)*/
+
+	}; 
+}));
+
+(function() {
+	function async_load(){
+		var s = document.createElement('script');
+		s.type = 'text/javascript';
+		s.async = true;
+		s.src = '//astg.widerplanet.com/js/wp_astg_4.0.js';
+		var x = document.getElementsByTagName('script')[0];
+		x.parentNode.insertBefore(s, x);
+	}
+	window.attachEvent ? window.attachEvent('onload', async_load) : window.addEventListener('load', async_load, false);
+})();
+</script>
+<!-- // WIDERPLANET  SCRIPT END 2015.6.8 -->
+	
+
+
+
+
+
+<!-- Facebook Pixel Code (페이지뷰) -->
+<script>
+	!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+			n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+		n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+		t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+			document,'script','https://connect.facebook.net/en_US/fbevents.js');
+
+	fbq('init', '979495435456377');
+	fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=979495435456377&ev=PageView&noscript=1"/></noscript>
+<!-- End Facebook Pixel Code -->
+
+
+</body>
+</html>
